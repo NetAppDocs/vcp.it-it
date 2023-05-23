@@ -1,0 +1,68 @@
+---
+sidebar: sidebar 
+permalink: vcp_task_reports_alerts.html 
+summary: 'Monitorate gli avvisi, che forniscono informazioni, avvisi o errori che indicano l"esecuzione del cluster utilizzando le pagine di reporting del plug-in NetApp Element per VMware vCenter Server.' 
+keywords: netapp, hci, vcp, vcenter, element, monitor, report, alert, cluster, performance 
+---
+= Monitorare gli avvisi di sistema
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+È possibile monitorare gli avvisi, ovvero informazioni, avvisi o errori che indicano il livello di esecuzione del cluster.
+
+Gli avvisi sono errori o guasti del cluster e vengono segnalati quando si verificano. La maggior parte degli errori si risolve automaticamente; tuttavia, alcuni potrebbero richiedere l'intervento manuale. Il sistema riporta i codici di errore degli avvisi con ciascun avviso nella pagina Avvisi. I codici di errore consentono di determinare quale componente del sistema ha generato l'avviso e il motivo per cui l'avviso è stato generato. Vedere link:vcp_reference_reports_alert_errors.html["Elenco degli avvisi di sistema"] per una descrizione e una procedura di risoluzione dei problemi.
+
+Dopo aver risolto il problema, il sistema esegue il polling e identifica il problema come risolto. Quindi, tutte le informazioni relative all'avviso, inclusa la data di risoluzione, vengono spostate nella vista Resolved (risolto).
+
+.Fasi
+. Dal plug-in vCenter, aprire la scheda *Gestione*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
+. Selezionare *Reporting* > *Alerts*.
+. Monitorare le seguenti informazioni sugli avvisi del cluster:
++
+** *ID*: ID univoco per un avviso cluster.
+** *Severità*
++
+*** *Attenzione*: Un problema minore che potrebbe richiedere presto attenzione. Gli aggiornamenti del sistema sono ancora consentiti a questo livello di gravità.
+*** *Errore*: Un errore che potrebbe causare il peggioramento delle performance o la perdita di alta disponibilità (ha). Gli errori in genere non devono influire altrimenti sul servizio.
+*** *Critico*: Un guasto grave che influisce sul servizio. Il sistema non è in grado di fornire richieste di i/o API o client. Il funzionamento in questo stato potrebbe causare la potenziale perdita di dati.
+*** *BestPractice*: Non viene utilizzata una procedura consigliata per la configurazione del sistema.
+
+
+** *Tipo*
++
+*** *Node*: Guasto che interessa un intero nodo.
+*** *Disco*: Errore che interessa un singolo disco.
+*** *Cluster*: Errore che interessa l'intero cluster.
+*** *Servizio*: Errore che interessa un servizio sul cluster.
+*** *Volume*: Errore relativo a un volume nel cluster.
+
+
+** *Node*: ID nodo per il nodo a cui si riferisce questo guasto. Incluso per i guasti al nodo e al disco, altrimenti impostato su - (DASH).
+** *ID unità*: ID unità per l'unità a cui si riferisce questo guasto. Incluso per i guasti del disco, altrimenti impostato su - (DASH).
+** *Error Code* (Codice errore): Codice descrittivo che indica la causa del guasto.
+** *Dettagli*: Descrizione dettagliata del guasto.
+** *Time* (ora): Questa intestazione è visibile solo nella vista Active filter (filtro attivo). La data e l'ora in cui è stato registrato il guasto.
+** *Resolution Date* (Data risoluzione): Questa intestazione è visibile solo nella vista Resolved Filter (filtro risolto). La data e l'ora in cui il guasto è stato risolto.
+
+
+. Per confermare che il problema è stato risolto, cercare nella vista Resolved (risolto).
+
+
+
+
+== Trova ulteriori informazioni
+
+* https://docs.netapp.com/us-en/hci/index.html["Documentazione NetApp HCI"^]
+* https://www.netapp.com/data-storage/solidfire/documentation["Pagina SolidFire and Element Resources"^]
+

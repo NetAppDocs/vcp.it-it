@@ -1,0 +1,737 @@
+---
+sidebar: sidebar 
+permalink: vcp_task_volumes_manage.html 
+summary: Utilizzando il plug-in NetApp Element per VMware vCenter Server, è possibile creare, visualizzare, modificare, eliminare, clonare, eseguire il backup o ripristinare i volumi. È inoltre possibile gestire ciascun volume di un cluster e aggiungere o rimuovere volumi in gruppi di accesso ai volumi. 
+keywords: netapp, volumes, vcp, vcenter, element, 
+---
+= Gestire i volumi
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Utilizzando il plug-in NetApp Element per VMware vCenter Server, è possibile creare, visualizzare, modificare, eliminare, clonare, eseguire il backup o ripristinare i volumi per gli account utente. È inoltre possibile gestire ciascun volume di un cluster e aggiungere o rimuovere volumi in gruppi di accesso ai volumi.
+
+.Opzioni
+* <<Creare un volume>>
+* <<Visualizzare i dettagli del volume>>
+* <<Modificare un volume>>
+* <<Clonare un volume>>
+* <<Eseguire il backup o il ripristino dei volumi>>
+* <<Eliminare i volumi>>
+* <<Eliminare i volumi>>
+* <<Ripristinare i volumi cancellati>>
+
+
+
+
+== Creare un volume
+
+È possibile creare un nuovo volume e associarlo a un determinato account (ogni volume deve essere associato a un account). Questa associazione consente all'account di accedere al volume tramite gli iniziatori iSCSI utilizzando le credenziali CHAP. È inoltre possibile specificare le impostazioni QoS per un volume durante la creazione.
+
+VMware richiede 512e per le risorse disco. Se 512e non è attivato, non è possibile creare un VMFS.
+
+.Di cosa hai bisogno
+* È necessario aggiungere ed eseguire almeno un cluster.
+* È stato creato un account utente.
+
+
+.Fasi
+. Dal plug-in vCenter, aprire la scheda *Gestione*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
+. Se vengono aggiunti due o più cluster, selezionare il cluster che si desidera utilizzare per l'attività nella barra di navigazione.
+. Selezionare la sottoscheda *Volumes*.
+. Dalla vista *Active*, selezionare *Create Volume* (Crea volume).
+. Immettere un nome per il volume.
++
+
+TIP: Utilizzare le Best practice di denominazione descrittive. Ciò è particolarmente importante se nell'ambiente vengono utilizzati più cluster o server vCenter.
+
+. Inserire le dimensioni totali del volume che si desidera creare.
++
+
+NOTE: La dimensione predefinita del volume è in GB. È possibile creare volumi utilizzando dimensioni misurate in GB o GiB: 1 GB = 1 000 000 000 byte 1 GiB = 1 073 741 824 byte
+
++
+
+NOTE: Per impostazione predefinita, l'emulazione a 512 byte è impostata SU ON per tutti i nuovi volumi. VMware richiede 512e per le risorse disco. Se 512e non è attivato, non è possibile creare un VMFS.
+
+. Selezionare un account utente dall'elenco *account*.
+. Nell'area *qualità del servizio*, eseguire una delle seguenti operazioni:
++
+** In *Policy*, selezionare un criterio QoS esistente, se disponibile.
+** In *Custom Settings* (Impostazioni personalizzate), impostare i valori minimi, massimi e burst personalizzati per IOPS o utilizzare i valori QoS predefiniti.
++
+
+IMPORTANT: Le policy di QoS sono le migliori per gli ambienti di servizio, ad esempio con database, applicazioni o server di infrastruttura che raramente si riavviano e necessitano di un accesso costante e uguale allo storage. L'automazione QoSSIOC personalizzata è ideale per le macchine virtuali di uso leggero, come desktop virtuali o macchine virtuali specializzate di tipo kiosk, che possono essere riavviati, accesi o spenti ogni giorno o più volte al giorno. L'automazione QoSSIOC e le policy QoS non devono essere utilizzate insieme. Dopo aver attivato le impostazioni QoSSIOC del datastore, tutte le impostazioni QoS a livello di volume vengono ignorate. I volumi con un valore massimo o burst IOPS superiore a 20,000 IOPS potrebbero richiedere una profondità di coda elevata o più sessioni per ottenere questo livello di IOPS su un singolo volume.
+
+
+
+. Selezionare *OK*.
+
+
+
+
+== Visualizzare i dettagli del volume
+
+Nel punto di estensione del plug-in è possibile rivedere le informazioni generali relative a tutti i volumi attivi nel cluster. È inoltre possibile visualizzare i dettagli di ciascun volume attivo, tra cui efficienza, performance, QoS e snapshot associati.
+
+.Fasi
+. Dal plug-in vCenter, aprire la scheda *Gestione*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
+. Se vengono aggiunti due o più cluster, selezionare il cluster nella barra di navigazione.
+. Fare clic sulla sottoschab *Volumes*.
++
+Vengono visualizzate informazioni generali sui volumi attivi.
+
+. Controllare un volume specifico.
+. Selezionare *azioni*.
+. Selezionare *Visualizza dettagli*.
+. Esaminare le seguenti informazioni:
++
+** *Volume ID*: L'ID generato dal sistema per il volume.
+** *Volume Name* (Nome volume): Il nome assegnato al volume.
+** *Account*: Il nome dell'account assegnato al volume.
+** *Access Groups*: Il nome del gruppo di accesso al volume a cui appartiene il volume.
+** *Access*: Il tipo di accesso assegnato al volume al momento della creazione.
++
+Valori possibili:
+
++
+*** `Read/Write`: Tutte le letture e le scritture sono accettate.
+*** `Read Only`: Tutte le attività di lettura sono consentite; non sono consentite scritture.
+*** `Locked`: È consentito solo l'accesso come amministratore.
+*** `ReplicationTarget`: Designato come volume di destinazione in una coppia di volumi replicati.
+
+
+** *Volume Paired*: Indica se il volume fa parte o meno di un'associazione di volumi.
+** *Size (GB)* (dimensione (GB)): Dimensione totale in GB del volume.
+** *Snapshot*: Il numero di snapshot creati per il volume.
+** *QoS Policy*: Il nome del criterio QoS definito dall'utente.
+** *512e*: Identifica se 512e è attivato su un volume. Il valore può essere Sì o No
+
+
+. Consultare i dettagli di un volume specifico come indicato nelle seguenti sezioni:
++
+** <<Sezione General Details (Dettagli generali)>>
+** <<Sezione sull'efficienza>>
+** <<Sezione delle performance>>
+** <<Sezione qualità del servizio>>
+** <<Sezione Snapshot>>
+
+
+
+
+
+
+=== Sezione General Details (Dettagli generali)
+
+* *Name* (Nome): Il nome assegnato al volume.
+* *Volume ID*: L'ID generato dal sistema per il volume.
+* *IQN*: Il nome qualificato iSCSI del volume.
+* *Account ID*: L'ID account univoco dell'account associato.
+* *Account*: Il nome dell'account assegnato al volume.
+* *Access Groups*: Il nome del gruppo di accesso al volume a cui appartiene il volume.
+* *Size*: Dimensione totale in byte del volume.
+* *Volume Paired*: Indica se il volume fa parte o meno di un'associazione di volumi.
+* *SCSI EUI Device ID*: Identificatore univoco globale del dispositivo SCSI per il volume nel formato a 16 byte basato su EUI-64.
+* *SCSI NAA Device ID* (ID dispositivo NAA SCSI): Identificativo univoco globale del dispositivo SCSI per l'endpoint del protocollo in NAA IEEE Registered Extended Format.
+
+
+
+
+=== Sezione sull'efficienza
+
+* *Compressione*: Il punteggio di efficienza della compressione per il volume.
+* *Deduplica*: Il punteggio di efficienza della deduplica per il volume.
+* *Thin Provisioning*: Il punteggio di efficienza del thin provisioning per il volume.
+* *Ultimo aggiornamento*: Data e ora dell'ultimo punteggio di efficienza.
+
+
+
+
+=== Sezione delle performance
+
+* *Account ID*: L'ID account univoco dell'account associato.
+* *IOPS effettivi*: IOPS effettivi correnti nel volume negli ultimi 500 millisecondi.
+* *Async Delay* (ritardo asincrono): Il periodo di tempo trascorso dall'ultima sincronizzazione del volume con il cluster remoto.
+* *Average IOP Size* (dimensione IOP media): Dimensione media in byte di i/o recente nel volume negli ultimi 500 millisecondi.
+* *Burst IOPS Size* (dimensione IOPS burst): Il numero totale di crediti IOP disponibili per l'utente. Quando i volumi non utilizzano fino al massimo IOPS, vengono accumulati crediti.
+* *Client Queue Depth* (profondità coda client): Numero di operazioni di lettura e scrittura in sospeso nel volume.
+* *Ultimo aggiornamento*: Data e ora dell'ultimo aggiornamento delle performance.
+* *Latency USec*: Il tempo medio, in microsecondi, per completare le operazioni sul volume negli ultimi 500 millisecondi. Un valore "0" (zero) indica che non vi è alcun i/o nel volume.
+* *Blocchi diversi da zero*: Numero totale di blocchi da 4 KiB con dati dopo il completamento dell'ultima operazione di garbage collection.
+* *Performance Utilization* (utilizzo delle performance): La percentuale di IOPS del cluster utilizzati. Ad esempio, un cluster da 250.000 IOP eseguito a 100.000 IOPS mostrerebbe un consumo del 40%.
+* *Read Bytes*: Il totale dei byte cumulativi letti dal volume dalla creazione del volume.
+* *Read Latency USec*: Il tempo medio, in microsecondi, per completare le operazioni di lettura sul volume negli ultimi 500 millisecondi.
+* *Read Operations*: Operazioni di lettura totali del volume dalla creazione del volume.
+* *Thin Provisioning*: Il punteggio di efficienza del thin provisioning per il volume.
+* *Throttle*: Un valore fluttuante compreso tra 0 e 1 che rappresenta quanto il sistema sta rallentando i client al di sotto dei loro maxIOPS a causa della replica di dati, degli errori transitori e degli snapshot acquisiti.
+* *Total Latency USec*: Il tempo, in microsecondi, per completare le operazioni di lettura e scrittura su un volume.
+* *Letture non allineate*: Per i volumi 512e, il numero di operazioni di lettura che non si trovavano su un confine di settore 4k. Un numero elevato di letture non allineate può indicare un allineamento errato delle partizioni.
+* *Unaligned Scritture*: Per i volumi 512e, il numero di operazioni di scrittura che non si trovavano su un confine di settore 4k. Un numero elevato di scritture non allineate può indicare un allineamento errato delle partizioni.
+* *Capacità utilizzata*: Percentuale della capacità utilizzata.
+* *Volume ID*: L'ID generato dal sistema per il volume.
+* *Vol Access Groups*: Gli ID del gruppo di accesso al volume associati al volume.
+* *Volume Utilization* (utilizzo volume): Un valore percentuale che descrive quanto il client sta utilizzando il volume. Valori possibili:
++
+** 0: Il client non sta utilizzando il volume.
+** 100: Il client sta utilizzando il proprio numero massimo di
+** >100: Il client sta utilizzando il burst.
+
+
+* *Write Bytes*: Il totale dei byte cumulativi scritti nel volume dalla creazione del volume.
+* *Write Latency USec*: Il tempo medio, in microsecondi, per completare le operazioni di scrittura su un volume negli ultimi 500 millisecondi.
+* *Write Operations*: Operazioni di scrittura cumulative totali nel volume dalla creazione del volume.
+* *Zero Blocks*: Numero totale di blocchi da 4 KiB senza dati dopo il completamento dell'ultimo round dell'operazione di garbage collection.
+
+
+
+
+=== Sezione qualità del servizio
+
+* *Policy*: Il nome del criterio QoS assegnato al volume.
+* *Dimensione i/o*: Le dimensioni degli IOPS in KB.
+* *IOPS min*: Il numero minimo di IOPS (Sostened Inputs and Outputs per Second) che il cluster fornisce a un volume. Il livello minimo di IOPS configurato per un volume è il livello garantito di performance per un volume. Le performance non scendono al di sotto di questo livello.
+* *IOPS max*: Numero massimo di IOPS sostenuti che il cluster fornisce a un volume. Quando i livelli di IOPS del cluster sono estremamente elevati, questo livello di performance IOPS non viene superato.
+* *Burst IOPS*: Il numero massimo di IOPS consentito in uno scenario a burst breve. Se un volume è stato eseguito al di sotto del massimo IOPS, i crediti burst vengono accumulati. Quando i livelli di performance diventano molto elevati e vengono trasferiti ai livelli massimi, sono consentiti brevi burst di IOPS sul volume.
+* *Larghezza di banda massima*: Larghezza di banda massima consentita dal sistema per elaborare blocchi di dimensioni maggiori.
+
+
+
+
+=== Sezione Snapshot
+
+* *Snapshot ID*: ID generato dal sistema per lo snapshot.
+* *Snapshot Name*: Nome definito dall'utente per lo snapshot.
+* *Create Date* (Data di creazione): La data e l'ora in cui è stata creata la snapshot.
+* *Data di scadenza*: Giorno e ora in cui l'istantanea verrà eliminata.
+* *Size*: Dimensione dello snapshot definita dall'utente in GB.
+
+
+
+
+== Modificare un volume
+
+È possibile modificare gli attributi del volume, ad esempio i valori QoS, le dimensioni del volume e l'unità di misura in cui vengono calcolati i valori di byte. È inoltre possibile modificare i livelli di accesso e l'account che può accedere al volume. È inoltre possibile modificare l'accesso all'account per l'utilizzo della replica o per limitare l'accesso al volume.
+
+Se si utilizzano volumi persistenti con il nodo di gestione, non modificare i nomi dei volumi persistenti.
+
+.Fasi
+. Dal plug-in vCenter, aprire la scheda *Gestione*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
+. Se vengono aggiunti due o più cluster, selezionare il cluster nella barra di navigazione.
+. Fare clic sulla sottoschab *Volumes*.
+. Dalla vista *Active*, controllare il volume.
+. Selezionare *azioni*.
+. Selezionare *Modifica*.
+. *Opzionale*: Nel campo *Volume Size* (dimensione volume), immettere una dimensione del volume diversa in GB o GiB.
++
+
+NOTE: È possibile aumentare, ma non diminuire, le dimensioni del volume. Se si stanno regolando le dimensioni del volume per la replica, è necessario innanzitutto aumentare le dimensioni del volume assegnato come destinazione della replica. Quindi, è possibile ridimensionare il volume di origine. Il volume di destinazione può avere dimensioni maggiori o uguali a quelle del volume di origine, ma non può essere più piccolo.
+
+. *Opzionale*: Selezionare un account utente diverso.
+. *Opzionale*: Selezionare un livello di accesso diverso tra i seguenti:
++
+** Lettura/scrittura
+** Di sola lettura
+** Bloccato
+** Destinazione della replica
+
+
+. Nell'area *qualità del servizio*, eseguire una delle seguenti operazioni:
++
+** In Policy (Policy), selezionare un criterio QoS esistente, se disponibile.
+** In Custom Settings (Impostazioni personalizzate), impostare i valori minimi, massimi e burst personalizzati per IOPS o utilizzare i valori QoS predefiniti.
++
+
+TIP: *Best practice*: Quando si modificano i valori IOPS, utilizzare incrementi in decine o centinaia. I valori di input richiedono numeri interi validi. Configurare volumi con un valore burst estremamente elevato. Ciò consente al sistema di elaborare più rapidamente carichi di lavoro sequenziali occasionali a blocchi di grandi dimensioni, limitando al contempo gli IOPS sostenuti per un volume.
+
++
+[IMPORTANT]
+====
+Le policy di QoS sono le migliori per gli ambienti di servizio, ad esempio con database, applicazioni o server di infrastruttura che raramente si riavviano e necessitano di un accesso costante e uguale allo storage. L'automazione QoSSIOC personalizzata è ideale per le macchine virtuali di uso leggero, come desktop virtuali o macchine virtuali specializzate di tipo kiosk, che possono essere riavviati, accesi o spenti ogni giorno o più volte al giorno. L'automazione QoSSIOC e le policy QoS non devono essere utilizzate insieme.
+
+Dopo aver attivato le impostazioni QoSSIOC del datastore, tutte le impostazioni QoS a livello di volume vengono ignorate.
+
+I volumi con un valore massimo o burst IOPS superiore a 20,000 IOPS potrebbero richiedere una profondità di coda elevata o più sessioni per ottenere questo livello di IOPS su un singolo volume.
+
+====
+
+
+. Selezionare *OK*.
+
+
+
+
+== Clonare un volume
+
+È possibile creare un clone di un volume per creare una copia point-in-time dei dati. Quando si clonano un volume, il sistema crea uno snapshot del volume e quindi una copia dei dati a cui fa riferimento lo snapshot. Si tratta di un processo asincrono e la quantità di tempo richiesta dal processo dipende dalla dimensione del volume che si sta clonando e dal carico corrente del cluster.
+
+.Di cosa hai bisogno
+* È necessario aggiungere ed eseguire almeno un cluster.
+* È necessario creare almeno un volume.
+* È necessario creare almeno un account utente.
+* Lo spazio disponibile senza provisioning deve essere uguale o superiore alle dimensioni del volume di origine.
+
+
+.A proposito di questa attività
+Il cluster supporta fino a due richieste di cloni in esecuzione per volume alla volta e fino a 8 operazioni di cloni di volume attivi alla volta. Le richieste che superano questi limiti vengono messe in coda per l'elaborazione successiva.
+
+
+NOTE: I volumi clonati non ereditano l'appartenenza al gruppo di accesso al volume dal volume di origine.
+
+I sistemi operativi differiscono per il trattamento dei volumi clonati. ESXi tratterà un volume clonato come una copia di volume o un volume di snapshot. Il volume sarà un dispositivo disponibile da utilizzare per creare un nuovo datastore. Per ulteriori informazioni sul montaggio di volumi cloni e sulla gestione delle LUN snapshot, consultare la documentazione VMware su https://docs.vmware.com/en/VMware-vSphere/6.7/com.vmware.vsphere.storage.doc/GUID-EEFEB765-A41F-4B6D-917C-BB9ABB80FC80.html["Montaggio di una copia del datastore VMFS"^] e. https://docs.vmware.com/en/VMware-vSphere/6.7/com.vmware.vsphere.storage.doc/GUID-EBAB0D5A-3C77-4A9B-9884-3D4AD69E28DC.html["Gestione di datastore VMFS duplicati"^].
+
+.Fasi
+. Dal plug-in vCenter, aprire la scheda *Gestione*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
+. Se vengono aggiunti due o più cluster, selezionare il cluster nella barra di navigazione.
+. Selezionare il volume che si desidera clonare.
+. Selezionare *azioni*.
+. Selezionare *Clone*.
+. Inserire un nome di volume per il volume appena clonato.
++
+
+TIP: Utilizzare le Best practice di denominazione descrittive. Ciò è particolarmente importante se nell'ambiente vengono utilizzati più cluster o server vCenter.
+
+. Selezionare una dimensione in GB o GIB per il volume clonato.
++
+La dimensione predefinita del volume è in GB. È possibile creare volumi utilizzando dimensioni misurate in GB o GiB:
+
++
+** 1 GB = 000 000 000 byte
+** 1GiB = 1 073 741 824 byte
++
+L'aumento delle dimensioni del volume di un clone comporta la creazione di un nuovo volume con ulteriore spazio libero alla fine del volume. A seconda dell'utilizzo del volume, potrebbe essere necessario estendere le partizioni o creare nuove partizioni nello spazio libero per utilizzarlo.
+
+
+
+. Selezionare un account da associare al volume appena clonato.
+. Selezionare uno dei seguenti tipi di accesso per il volume appena clonato:
++
+** Lettura/scrittura
+** Di sola lettura
+** Bloccato
+
+
+. Regolare le impostazioni 512e, se necessario.
++
+
+NOTE: Per impostazione predefinita, l'emulazione a 512 byte è attivata per tutti i nuovi volumi. VMware richiede 512e per le risorse disco. Se 512e non è attivato, non è possibile creare un VMFS e i dettagli del volume sono disattivati.
+
+. Selezionare *OK*.
++
+
+NOTE: Il tempo necessario per completare un'operazione di cloning dipende dalle dimensioni del volume e dal carico corrente del cluster. Aggiornare la pagina se il volume clonato non compare nell'elenco dei volumi.
+
+
+
+
+
+== Eseguire il backup o il ripristino dei volumi
+
+È possibile configurare il sistema per eseguire il backup e il ripristino del contenuto di un volume da e verso un container di archivi di oggetti esterno allo storage basato su software NetApp Element.
+
+È inoltre possibile eseguire il backup e il ripristino dei dati da e verso sistemi remoti basati su software NetApp Element. È possibile eseguire un massimo di due processi di backup o ripristino alla volta su un volume.
+
+
+
+=== Backup dei volumi
+
+È possibile eseguire il backup dei volumi NetApp Element nello storage Element e degli archivi di oggetti secondari compatibili con Amazon S3 o OpenStack Swift.
+
+
+
+==== Eseguire il backup di un volume in un archivio di oggetti Amazon S3
+
+Puoi eseguire il backup dei volumi NetApp Element in archivi di oggetti esterni compatibili con Amazon S3.
+
+. Dal plug-in vCenter, aprire la scheda *Gestione*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
+. Se vengono aggiunti due o più cluster, selezionare il cluster nella barra di navigazione.
+. Selezionare la sottoschab *Volumes*.
+. Dalla vista *Active*, controllare il volume.
+. Selezionare *azioni*.
+. Selezionare *Backup in*.
+. In *Backup del volume su*, selezionare *Amazon S3*.
+. Selezionare un'opzione in con il seguente formato dati:
++
+** Nativo: Formato compresso leggibile solo dai sistemi storage basati su software NetApp Element.
+** Non compresso: Un formato non compresso compatibile con altri sistemi.
+
+
+. Nel campo *Nome host*, immettere un nome host da utilizzare per accedere all'archivio di oggetti.
+. Nel campo *Access key ID* (ID chiave di accesso), immettere un ID chiave di accesso per l'account.
+. Nel campo *Secret access key* (chiave di accesso segreta), immettere la chiave di accesso segreta per l'account.
+. Nel campo *Amazon S3 bucket* (bucket Amazon S3), immettere il bucket S3 in cui memorizzare il backup.
+. *Opzionale*: Nel campo *prefisso*, immettere un prefisso per il nome del volume di backup.
+. *Opzionale*: Nel campo *nametag*, inserire un nametag da aggiungere al prefisso.
+. Selezionare *OK*.
+
+
+
+
+==== Eseguire il backup di un volume in un archivio di oggetti OpenStack Swift
+
+È possibile eseguire il backup dei volumi NetApp Element in archivi di oggetti esterni compatibili con OpenStack Swift.
+
+. Dal plug-in vCenter, aprire la scheda *Gestione*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
+. Se vengono aggiunti due o più cluster, selezionare il cluster nella barra di navigazione.
+. Selezionare la sottoschab *Volumes*.
+. Dalla vista *Active*, controllare il volume.
+. Selezionare *azioni*.
+. Selezionare *Backup in*.
+. In *Backup del volume su*, selezionare *OpenStack Swift*.
+. Selezionare un'opzione in con il seguente formato dati:
++
+** Nativo: Formato compresso leggibile solo dai sistemi storage basati su software NetApp Element.
+** Non compresso: Un formato non compresso compatibile con altri sistemi.
+
+
+. Nel campo *URL*, immettere un URL da utilizzare per accedere all'archivio di oggetti.
+. Nel campo *Nome utente*, immettere un nome utente per l'account.
+. Nel campo *Authentication key* (chiave di autenticazione), inserire la chiave di autenticazione dell'account.
+. Nel campo *container*, immettere il contenitore in cui memorizzare il backup.
+. *Opzionale*: Nel campo *prefisso*, immettere un prefisso per il nome del volume di backup.
+. *Opzionale*: Nel campo *nametag*, inserire un nametag da aggiungere al prefisso.
+. Selezionare *OK*.
+
+
+
+
+==== Eseguire il backup di un volume in un cluster che esegue il software Element
+
+È possibile eseguire il backup dei volumi che risiedono in un cluster che esegue il software NetApp Element in un cluster di elementi remoto.
+
+Quando si esegue il backup o il ripristino da un cluster all'altro, il sistema genera una chiave da utilizzare come autenticazione tra i cluster.
+
+Questa chiave di scrittura del volume in blocco consente al cluster di origine di autenticarsi con il cluster di destinazione, fornendo sicurezza durante la scrittura nel volume di destinazione. Nell'ambito del processo di backup o ripristino, è necessario generare una chiave di scrittura del volume in blocco dal volume di destinazione prima di avviare l'operazione.
+
+Si tratta di una procedura in due parti:
+
+* (Destinazione) impostare il volume di backup
+* (Origine) eseguire il backup di un volume
+
+
+.Impostare il volume di backup
+. Dal vCenter e dal cluster in cui si desidera inserire il backup del volume, aprire la scheda *Management*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
+. Se vengono aggiunti due o più cluster, selezionare il cluster nella barra di navigazione.
+. Selezionare la sottoschab *Volumes*.
+. Dalla vista *Active*, controllare il volume.
+. Selezionare *azioni*.
+. Selezionare *Restore from* (Ripristina da).
+. In *Ripristina da*, selezionare *NetApp Element*.
+. Selezionare un'opzione in con il seguente formato dati:
++
+** Nativo: Formato compresso leggibile solo dai sistemi storage basati su software NetApp Element.
+** Non compresso: Un formato non compresso compatibile con altri sistemi.
+
+
+. Fare clic su *generate Key* (genera chiave) per generare una chiave di scrittura del volume in blocco per il volume di destinazione.
+. Copiare la chiave di scrittura del volume in blocco negli Appunti per applicarla ai passaggi successivi sul cluster di origine.
+
+
+.Eseguire il backup di un volume
+. Dal vCenter e dal cluster che contiene il volume di origine da utilizzare per il backup, aprire la scheda *Management*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
+. Se vengono aggiunti due o più cluster, selezionare il cluster nella barra di navigazione.
+. Selezionare la sottoschab *Volumes*.
+. Dalla vista *Active*, controllare il volume.
+. Selezionare *azioni*.
+. Selezionare *Backup in*.
+. In *Backup del volume su*, selezionare *NetApp Element*.
+. Selezionare la stessa opzione del cluster di destinazione con il seguente formato di dati:
++
+** Nativo: Formato compresso leggibile solo dai sistemi storage basati su software NetApp Element.
+** Non compresso: Un formato non compresso compatibile con altri sistemi.
+
+
+. Nel campo *Remote cluster MVIP*, immettere l'indirizzo IP virtuale di gestione del cluster del volume di destinazione.
+. Nel campo *Remote cluster user name* (Nome utente cluster remoto), immettere il nome utente dell'amministratore del cluster di destinazione.
+. Nel campo *Remote cluster user password* (Password utente cluster remoto), immettere la password dell'amministratore del cluster di destinazione.
+. Nel campo *Bulk volume write key* (chiave di scrittura volume in blocco), incollare la chiave generata nel cluster di destinazione.
+. Selezionare *OK*.
+
+
+
+
+=== Ripristinare i volumi
+
+Quando ripristini un volume da un backup in un archivio di oggetti come OpenStack Swift o Amazon S3, hai bisogno di informazioni manifeste dal processo di backup originale. Se si sta ripristinando un volume NetApp Element di cui è stato eseguito il backup su un sistema storage basato su elementi NetApp, le informazioni manifest non sono richieste. Le informazioni richieste per il ripristino da Swift e S3 sono disponibili nel registro eventi della scheda Reporting.
+
+
+
+==== Ripristinare un volume dal backup in un archivio di oggetti Amazon S3
+
+Puoi ripristinare un volume da un backup su un archivio di oggetti Amazon S3 utilizzando il plug-in.
+
+. Dal plug-in vCenter, aprire la scheda *Reporting*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > creazione di report*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > rapporti*.
+
+
+. Se vengono aggiunti due o più cluster, selezionare il cluster nella barra di navigazione.
+. Selezionare la sottoschab *Registro eventi*.
+. Selezionare l'evento di backup che ha creato il backup da ripristinare.
+. Selezionare *Dettagli* per l'evento.
+. Selezionare *Visualizza dettagli*.
+. Copiare le informazioni del manifesto negli Appunti.
+. Selezionare *Management > Volumes* (Gestione > volumi).
+. Dalla vista *Active*, controllare il volume.
+. Selezionare *azioni*.
+. Selezionare *Restore from* (Ripristina da).
+. In *Restore from* (Ripristina da), selezionare *Amazon S3*.
+. Selezionare un'opzione con il seguente formato dati:
++
+** Nativo: Formato compresso leggibile solo dai sistemi storage basati su software NetApp Element.
+** Non compresso: Un formato non compresso compatibile con altri sistemi.
+
+
+. Nel campo *Nome host*, immettere un nome host da utilizzare per accedere all'archivio di oggetti.
+. Nel campo *Access key ID* (ID chiave di accesso), immettere un ID chiave di accesso per l'account.
+. Nel campo *Secret access key* (chiave di accesso segreta), immettere la chiave di accesso segreta per l'account.
+. Nel campo *Amazon S3 bucket* (bucket Amazon S3), immettere il bucket S3 in cui è memorizzato il backup.
+. Incollare le informazioni del manifesto nel campo *manifesto*.
+. Selezionare *OK*.
+
+
+
+
+==== Ripristinare un volume dal backup in un archivio di oggetti OpenStack Swift
+
+È possibile ripristinare un volume da un backup in un archivio di oggetti OpenStack Swift utilizzando il plug-in.
+
+. Dal plug-in vCenter, aprire la scheda *Reporting*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > creazione di report*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > rapporti*.
+
+
+. Se vengono aggiunti due o più cluster, selezionare il cluster nella barra di navigazione.
+. Selezionare la sottoschab *Registro eventi*.
+. Selezionare l'evento di backup che ha creato il backup da ripristinare.
+. Selezionare *Dettagli* per l'evento.
+. Selezionare *Visualizza dettagli*.
+. Copiare le informazioni del manifesto negli Appunti.
+. Selezionare *Management > Volumes* (Gestione > volumi).
+. Dalla vista *Active*, controllare il volume.
+. Selezionare *azioni*.
+. Selezionare *Restore from* (Ripristina da).
+. In *Restore from* (Ripristina da), selezionare *OpenStack Swift*.
+. Selezionare un'opzione con il seguente formato dati:
++
+** Nativo: Formato compresso leggibile solo dai sistemi storage basati su software NetApp Element.
+** Non compresso: Un formato compresso compatibile con altri sistemi.
+
+
+. Nel campo *URL*, immettere un URL da utilizzare per accedere all'archivio di oggetti.
+. Nel campo *Nome utente*, immettere un nome utente per l'account.
+. Nel campo *Authentication key* (chiave di autenticazione), inserire la chiave di autenticazione dell'account.
+. Nel campo *container*, immettere il nome del contenitore in cui è memorizzato il backup.
+. Incollare le informazioni del manifesto nel campo *manifesto*.
+. Selezionare *OK*.
+
+
+
+
+==== Ripristinare un volume dal backup su un cluster che esegue il software Element
+
+È possibile ripristinare un volume da un backup su un cluster che esegue il software NetApp Element. Quando si esegue il backup o il ripristino da un cluster all'altro, il sistema genera una chiave da utilizzare come autenticazione tra i cluster. Questa chiave di scrittura del volume in blocco consente al cluster di origine di autenticarsi con il cluster di destinazione, fornendo sicurezza durante la scrittura nel volume di destinazione. Nell'ambito del processo di backup o ripristino, è necessario generare una chiave di scrittura del volume in blocco dal volume di destinazione prima di avviare l'operazione.
+
+Si tratta di una procedura in due parti:
+
+* (Cluster di destinazione) selezionare il volume da utilizzare per il ripristino
+* (Cluster di origine) ripristinare il volume
+
+
+.Selezionare il volume da utilizzare per il ripristino
+. Dal vCenter e dal cluster in cui si desidera ripristinare il volume, aprire la scheda *Management*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
+. Se vengono aggiunti due o più cluster, selezionare il cluster nella barra di navigazione.
+. Selezionare la sottoschab *Volumes*.
+. Dalla vista *Active*, controllare il volume.
+. Selezionare *azioni*.
+. Selezionare *Restore from* (Ripristina da).
+. In *Ripristina da*, selezionare *NetApp Element*.
+. Selezionare un'opzione in con il seguente formato dati:
++
+** Nativo: Formato compresso leggibile solo dai sistemi storage basati su software NetApp Element.
+** Non compresso: Un formato non compresso compatibile con altri sistemi.
+
+
+. Fare clic su *generate Key* (genera chiave) per generare una chiave di scrittura del volume in blocco per il volume di destinazione.
+. Copiare la chiave di scrittura del volume in blocco negli Appunti per applicarla ai passaggi successivi sul cluster di origine.
+
+
+.Ripristinare il volume
+. Dal vCenter e dal cluster che contiene il volume di origine da utilizzare per il ripristino, aprire la scheda *Management*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
+. Se vengono aggiunti due o più cluster, selezionare il cluster nella barra di navigazione.
+. Selezionare la sottoschab *Volumes*.
+. Dalla vista *Active*, controllare il volume.
+. Selezionare *azioni*.
+. Selezionare *Backup in*.
+. In *Backup del volume su*, selezionare *NetApp Element*.
+. Selezionare l'opzione che corrisponde al backup con il seguente formato di dati:
++
+** Nativo: Formato compresso leggibile solo dai sistemi storage basati su software NetApp Element.
+** Non compresso: Un formato non compresso compatibile con altri sistemi.
+
+
+. Nel campo *Remote cluster MVIP*, immettere l'indirizzo IP virtuale di gestione del cluster del volume di destinazione.
+. Nel campo *Remote cluster user name* (Nome utente cluster remoto), immettere il nome utente dell'amministratore del cluster di destinazione.
+. Nel campo *Remote cluster user password* (Password utente cluster remoto), immettere la password dell'amministratore del cluster di destinazione.
+. Nel campo *Bulk volume write key* (chiave di scrittura volume in blocco), incollare la chiave generata nel cluster di destinazione.
+. Selezionare *OK*.
+
+
+
+
+== Eliminare i volumi
+
+È possibile eliminare uno o più volumi da un cluster NetApp Element utilizzando il punto di estensione del plug-in.
+
+Il sistema non elimina immediatamente un volume cancellato. Un volume cancellato può essere ripristinato per circa otto ore.
+
+È possibile ripristinare un volume prima che il sistema lo elimini o eliminarlo manualmente dalla vista eliminata in *Gestione* > *volumi*. Quando si ripristina un volume, questo torna online e le connessioni iSCSI vengono ripristinate.
+
+
+IMPORTANT: I volumi persistenti associati ai servizi di gestione vengono creati e assegnati a un nuovo account durante l'installazione o l'aggiornamento. Se si utilizzano volumi persistenti, non modificare o eliminare i volumi o l'account associato.
+
+
+IMPORTANT: Se un volume utilizzato per creare uno snapshot viene cancellato, gli snapshot associati vengono elencati nella vista inattiva nella pagina protezione > istantanee. Quando i volumi di origine cancellati vengono rimossi, anche le snapshot nella vista inattiva vengono rimosse dal sistema.
+
+.Fasi
+. Dal plug-in vCenter, aprire la scheda *Gestione*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
+. Se vengono aggiunti due o più cluster, selezionare il cluster nella barra di navigazione.
+. Selezionare la sottoschab *Volumes*.
+. Eliminare uno o più volumi:
++
+.. Dalla vista *Active*, controllare il volume che si desidera eliminare.
+.. Selezionare *azioni*.
+.. Selezionare *Delete* (Elimina).
++
+
+NOTE: Il plug-in non consente di eliminare un volume con un datastore.
+
+
+
+. Confermare l'azione.
++
+Il volume si sposta dalla vista attiva alla vista eliminata nella pagina Volumes (volumi).
+
+
+
+
+
+== Eliminare i volumi
+
+È possibile eliminare manualmente i volumi dopo averli eliminati.
+
+Il sistema elimina automaticamente i volumi cancellati otto ore dopo l'eliminazione. Tuttavia, se si desidera eliminare un volume prima dell'ora di eliminazione pianificata, è possibile eseguire un'eliminazione manuale attenendosi alla procedura descritta di seguito.
+
+
+IMPORTANT: Quando un volume viene eliminato, viene immediatamente e definitivamente rimosso dal sistema. Tutti i dati nel volume vengono persi.
+
+.Fasi
+. Dal plug-in vCenter, aprire la scheda *Gestione*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
+. Se vengono aggiunti due o più cluster, selezionare il cluster nella barra di navigazione.
+. Selezionare la sottoschab *Volumes*.
+. Selezionare il filtro di visualizzazione e selezionare *Deleted* dall'elenco.
+. Selezionare uno o più volumi da eliminare.
+. Selezionare *Rimuovi*.
+. Confermare l'azione.
+
+
+
+
+== Ripristinare i volumi cancellati
+
+È possibile ripristinare un volume nel sistema NetApp Element se è stato eliminato ma non ancora eliminato.
+
+Il sistema elimina automaticamente un volume circa otto ore dopo l'eliminazione. Se il sistema ha disinstallato il volume, non è possibile ripristinarlo.
+
+
+NOTE: Se un volume viene cancellato e poi ripristinato, ESXi non rileverà il volume ripristinato (e l'archivio dati, se presente). Rimuovere la destinazione statica dall'adattatore iSCSI ESXi e ripetere la scansione dell'adattatore.
+
+.Fasi
+. Dal plug-in vCenter, aprire la scheda *Gestione*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
+. Se vengono aggiunti due o più cluster, selezionare il cluster nella barra di navigazione.
+. Selezionare la sottoschab *Volumes*.
+. Selezionare il filtro di visualizzazione e selezionare *Deleted* dall'elenco.
+. Selezionare uno o più volumi da ripristinare.
+. Selezionare *Restore* (Ripristina).
+. Selezionare il filtro di visualizzazione e selezionare *attivo* dall'elenco.
+. Verificare che il volume o i volumi e tutte le connessioni siano ripristinati.
+
+
+
+
+== Trova ulteriori informazioni
+
+* https://docs.netapp.com/us-en/hci/index.html["Documentazione NetApp HCI"^]
+* https://www.netapp.com/data-storage/solidfire/documentation["Pagina SolidFire and Element Resources"^]
+

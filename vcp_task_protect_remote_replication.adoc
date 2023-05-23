@@ -1,0 +1,730 @@
+---
+sidebar: sidebar 
+permalink: vcp_task_protect_remote_replication.html 
+summary: La replica in tempo reale consente la creazione rapida di copie remote dei dati dei volumi. 
+keywords: netapp, hci, vcp, vcenter, element, protect, replication, remote, cluster 
+---
+= Eseguire la replica remota tra cluster
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Per i cluster che eseguono il software NetApp Element, la replica in tempo reale consente la creazione rapida di copie remote dei dati dei volumi. È possibile associare un cluster di storage a un massimo di quattro altri cluster di storage.
+
+È possibile replicare i dati del volume in modo sincrono o asincrono da uno dei cluster di una coppia di cluster per scenari di failover e failback. Per sfruttare la replica remota in tempo reale, è necessario innanzitutto associare due cluster NetApp Element e quindi associare volumi su ciascun cluster.
+
+.Di cosa hai bisogno
+* Assicurarsi di aver aggiunto almeno un cluster al plug-in.
+* Assicurarsi che tutti gli indirizzi IP dei nodi sulle reti di gestione e di storage per i cluster accoppiati siano instradati l'uno verso l'altro.
+* Assicurarsi che le MTU di tutti i nodi accoppiati siano le stesse e che siano supportate end-to-end tra i cluster.
+* Assicurarsi che la differenza tra le versioni del software NetApp Element sui cluster non sia superiore a una versione principale. Se la differenza è maggiore, uno dei cluster deve essere aggiornato per eseguire la replica dei dati.
+
+
+
+NOTE: Le appliance WAN Accelerator non sono state qualificate da NetApp per l'utilizzo durante la replica dei dati. Queste appliance possono interferire con la compressione e la deduplica se implementate tra due cluster che stanno replicando i dati. Assicurarsi di qualificare completamente gli effetti di qualsiasi appliance WAN Accelerator prima di implementarla in un ambiente di produzione.
+
+.Fasi
+. <<Accoppia cluster>>
+. <<Associare i volumi>>
+. <<Convalidare la replica del volume>>
+. <<Eliminare una relazione di volume dopo la replica>>
+. <<Gestire le relazioni dei volumi>>
+
+
+
+
+== Accoppia cluster
+
+Per utilizzare la funzionalità di replica in tempo reale, è necessario associare due cluster come primo passo. Dopo aver associato e connesso due cluster, è possibile configurare i volumi attivi su un cluster per la replica continua su un secondo cluster, fornendo una protezione continua dei dati (CDP).
+
+È possibile associare un cluster di origine e di destinazione utilizzando l'MVIP del cluster di destinazione se è disponibile l'accesso di Cluster Admin a entrambi i cluster. Se l'accesso di Cluster Admin è disponibile solo su un cluster di una coppia di cluster, è possibile utilizzare una chiave di accoppiamento sul cluster di destinazione per completare l'associazione del cluster.
+
+.Di cosa hai bisogno
+* È necessario disporre dei privilegi di amministratore del cluster per uno o entrambi i cluster da associare.
+* Assicurarsi che tra i cluster vi siano meno di 2000 ms di latenza di round-trip.
+* Assicurarsi che la differenza tra le versioni del software NetApp Element sui cluster non sia superiore a una versione principale.
+* Assicurarsi che tutti gli IP dei nodi sui cluster accoppiati siano instradati l'uno verso l'altro.
+
+
+
+NOTE: L'associazione dei cluster richiede una connettività completa tra i nodi della rete di gestione. La replica richiede la connettività tra i singoli nodi sulla rete del cluster di storage.
+
+È possibile associare un cluster NetApp Element a un massimo di quattro altri cluster per la replica dei volumi. È inoltre possibile associare tra loro i cluster all'interno del gruppo di cluster.
+
+Scegliere uno dei seguenti metodi:
+
+* <<Associare i cluster utilizzando credenziali note>>
+* <<Associare i cluster con una chiave di accoppiamento>>
+
+
+
+
+=== Associare i cluster utilizzando credenziali note
+
+È possibile associare due cluster per la replica in tempo reale utilizzando l'MVIP di un cluster per stabilire una connessione con l'altro cluster. Per utilizzare questo metodo, è necessario disporre dell'accesso di Cluster Admin su entrambi i cluster.
+
+.A proposito di questa attività
+Il nome utente e la password dell'amministratore del cluster vengono utilizzati per autenticare l'accesso al cluster prima di poter associare i cluster.
+
+Se l'MVIP non è noto o l'accesso al cluster non è disponibile, è possibile associare il cluster generando una chiave di accoppiamento e utilizzando la chiave per associare i due cluster. Per istruzioni, vedere <<Associare i cluster con una chiave di accoppiamento>>.
+
+.Fasi
+. In vSphere Web Client, aprire la scheda *Protection*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Configurazione > protezione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Configurazione NetApp Element > protezione*.
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+
+
+. Selezionare la sottoscheda *Cluster Pairs*.
+. Selezionare *Create Cluster Pairing* (Crea associazione cluster).
+. Selezionare una delle seguenti opzioni:
++
+** *Registered Cluster*: Se il cluster remoto dell'associazione è controllato dalla stessa istanza del plug-in Element vCenter, selezionare questa opzione.
+** *Credentialed Cluster*: Se il cluster remoto dispone di credenziali note che non rientrano nella configurazione del plug-in Element vCenter, selezionare questa opzione.
+
+
+. Se è stato selezionato *Registered Cluster*, selezionare un cluster dall'elenco dei cluster disponibili e fare clic su *Pair*.
+. Se si seleziona *Credentialed Cluster*, procedere come segue:
++
+.. Inserire l'indirizzo MVIP del cluster remoto.
+.. Inserire un nome utente amministratore del cluster.
+.. Immettere una password per l'amministratore del cluster.
+.. Selezionare *Avvia associazione*.
+
+
+. Una volta completata l'attività e visualizzata la pagina Cluster Pairs, verificare che la coppia di cluster sia connessa.
+. (Facoltativo) sul cluster remoto, verificare che la coppia di cluster sia connessa utilizzando l'interfaccia utente Element o i punti di estensione del plug-in:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > protezione > coppie cluster*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > protezione > coppie cluster*.
+
+
+
+
+
+
+=== Associare i cluster con una chiave di accoppiamento
+
+Se si dispone dell'accesso Cluster Admin a un cluster locale ma non a un cluster remoto, è possibile associare i cluster utilizzando una chiave di accoppiamento. Una chiave di accoppiamento viene generata su un cluster locale e quindi inviata in modo sicuro a un amministratore del cluster in un sito remoto per stabilire una connessione e completare l'accoppiamento del cluster per la replica in tempo reale.
+
+Questa procedura descrive l'associazione dei cluster tra due cluster utilizzando vCenter sui siti locali e remoti. In alternativa, è possibile utilizzare i cluster non controllati dal plug-in vCenter https://docs.netapp.com/us-en/element-software/storage/task_replication_pair_cluster_using_pairing_key.html["avviare o completare l'associazione del cluster"] Utilizzo dell'interfaccia utente Web Element.
+
+[[open_protection_tab]]
+.Fasi
+. Dal vCenter che contiene il cluster locale, aprire la scheda *Protection*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > protezione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > protezione*.
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+
+
+. Selezionare la sottoscheda *Cluster Pairs*.
+. Selezionare *Create Cluster Pairing* (Crea associazione cluster).
+. Selezionare *cluster inaccessibile*.
+. Selezionare *genera chiave*.
++
+
+NOTE: Questa azione genera una chiave di testo per l'associazione e crea una coppia di cluster non configurata sul cluster locale. Se la procedura non viene completata, è necessario eliminare manualmente la coppia di cluster.
+
+. Copiare la chiave di accoppiamento del cluster negli Appunti.
+. Selezionare *Chiudi*.
+. Rendere la chiave di accoppiamento accessibile all'amministratore del cluster nel sito del cluster remoto.
++
+
+NOTE: La chiave di accoppiamento del cluster contiene una versione di MVIP, nome utente, password e informazioni sul database per consentire le connessioni dei volumi per la replica remota. Questa chiave deve essere trattata in modo sicuro e non memorizzata in modo da consentire l'accesso accidentale o non sicuro al nome utente o alla password.
+
++
+
+IMPORTANT: Non modificare i caratteri della chiave di accoppiamento. La chiave diventa non valida se viene modificata.
+
+. Dal vCenter che contiene il cluster remoto, <<open_protection_tab,Aprire la scheda protezione>>.
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
++
+
+NOTE: In alternativa, è possibile completare l'associazione utilizzando l'interfaccia utente di Element.
+
+. Selezionare la sottoscheda *Cluster Pairs*.
+. Selezionare *complete Cluster Pairing* (completa associazione cluster).
++
+
+NOTE: Attendere che il dispositivo di caricamento scompaia prima di passare alla fase successiva. Se si verifica un errore imprevisto durante il processo di associazione, verificare la presenza di eventuali coppie di cluster non configurate sul cluster locale e remoto ed eseguire nuovamente l'associazione.
+
+. Incollare la chiave di accoppiamento dal cluster locale nel campo *Cluster Pairing Key*.
+. Selezionare *Pair Cluster*.
+. Una volta completata l'attività e visualizzata la pagina *Cluster Pair*, verificare che la coppia di cluster sia connessa.
+. Per verificare che la coppia di cluster sia connessa, sul cluster remoto <<open_protection_tab,Aprire la scheda protezione>> Oppure utilizzare l'interfaccia utente Element.
+
+
+
+
+=== Convalidare le connessioni delle coppie di cluster
+
+Una volta completata l'associazione del cluster, è possibile verificare la connessione della coppia di cluster per garantire la riuscita della replica.
+
+.Fasi
+. Nel cluster locale, selezionare *Data Protection* > *Cluster Pairs*.
+. Verificare che la coppia di cluster sia connessa.
+. Tornare al cluster locale e alla finestra *Cluster Pairs* e verificare che la coppia di cluster sia connessa.
+
+
+
+
+== Associare i volumi
+
+Dopo aver stabilito una connessione tra i cluster di una coppia di cluster, è possibile associare un volume di un cluster a un volume dell'altro cluster della coppia.
+
+È possibile associare il volume utilizzando uno dei seguenti metodi:
+
+* <<Associare i volumi utilizzando credenziali note>>: Utilizzare credenziali note per entrambi i cluster
+* <<Associare i volumi utilizzando una chiave di accoppiamento>>: Utilizzare una chiave di accoppiamento se le credenziali del cluster sono disponibili solo sul cluster di origine.
+* <<Creare volumi di destinazione e associarli ai volumi locali>>Se si conoscono le credenziali per entrambi i cluster, creare un volume di destinazione della replica sul cluster remoto da associare al cluster di origine.
+
+
+Una volta stabilita la relazione di accoppiamento di un volume, è necessario identificare quale volume è la destinazione della replica:
+
+* <<Assegnare un'origine e una destinazione di replica ai volumi accoppiati>>
+
+
+.Di cosa hai bisogno
+* È necessario stabilire una connessione tra i cluster di una coppia di cluster.
+* È necessario disporre dei privilegi di amministratore del cluster per uno o entrambi i cluster associati.
+
+
+
+
+=== Associare i volumi utilizzando credenziali note
+
+È possibile associare un volume locale a un altro volume di un cluster remoto. Utilizzare questo metodo se è disponibile l'accesso di Cluster Admin a entrambi i cluster su cui devono essere associati i volumi. Questo metodo utilizza l'ID del volume sul cluster remoto per avviare una connessione.
+
+.Prima di iniziare
+* Si dispone delle credenziali Cluster Admin per il cluster remoto.
+* Assicurarsi che i cluster contenenti i volumi siano associati.
+* Si conosce l'ID del volume remoto, a meno che non si intenda creare un nuovo volume durante questo processo.
+* Se si desidera che il volume locale sia l'origine, assicurarsi che la modalità di accesso del volume sia impostata su lettura/scrittura.
+
+
+.Fasi
+. Dal vCenter che contiene il cluster locale, aprire la scheda *Management*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la sottoscheda *Volumes*.
+. Dalla vista *Active*, selezionare la casella di controllo del volume che si desidera associare.
+. Selezionare *azioni*.
+. Selezionare *Volume Pairing* (Associazione volume).
+. Selezionare una delle seguenti opzioni:
++
+** *Volume Creation* (creazione volume): Per creare un volume di destinazione della replica sul cluster remoto, selezionare questa opzione. Questo metodo può essere utilizzato solo su cluster remoti controllati da un plug-in Element vCenter.
+** *Volume Selection* (selezione volume): Se il cluster remoto per il volume di destinazione è controllato da un plug-in Element vCenter, selezionare questa opzione.
+** *Volume ID*: Se il cluster remoto per il volume di destinazione ha credenziali note che non rientrano nella configurazione del plug-in Element vCenter, selezionare questa opzione.
+
+
+. Selezionare una modalità di replica:
++
+** *Real-time (Synchronous)*: Le scritture vengono riconosciute al client dopo il commit su entrambi i cluster di origine e di destinazione.
+** *Real-time (asincrono)*: Le scritture vengono riconosciute al client dopo il commit sul cluster di origine.
+** *Solo istantanee*: Vengono replicate solo le istantanee create nel cluster di origine. Le scritture attive dal volume di origine non vengono replicate.
+
+
+. Se è stata selezionata l'opzione *Volume Creation* (creazione volume) come modalità di associazione, procedere come segue:
++
+.. Selezionare un cluster associato dall'elenco a discesa.
++
+
+NOTE: Questa azione compila gli account disponibili sul cluster da selezionare nella fase successiva.
+
+.. Selezionare un account sul cluster di destinazione per il volume di destinazione della replica.
+.. Immettere un nome per il volume di destinazione della replica.
++
+
+NOTE: Durante questo processo, non è possibile regolare le dimensioni del volume.
+
+
+
+. Se è stata selezionata l'opzione *Volume Selection* (selezione volume) come modalità di associazione, procedere come segue:
++
+.. Selezionare un cluster associato.
++
+
+NOTE: Questa azione inserisce i volumi disponibili nel cluster da selezionare nella fase successiva.
+
+.. (Facoltativo) selezionare l'opzione *Set remote volume to Replication Target* (Imposta volume remoto su destinazione di replica) se si desidera impostare il volume remoto come destinazione nell'accoppiamento dei volumi. Il volume locale, se impostato su lettura/scrittura, diventa l'origine della coppia.
++
+
+IMPORTANT: Se si assegna un volume esistente come destinazione della replica, i dati su quel volume verranno sovrascritti. Come Best practice, è necessario utilizzare un nuovo volume come destinazione della replica.
+
++
+
+NOTE: È inoltre possibile assegnare l'origine e la destinazione della replica successivamente nel processo di associazione da *volumi* > *azioni* > *Modifica*. Per completare l'associazione, è necessario assegnare un'origine e una destinazione.
+
+.. Selezionare un volume dall'elenco dei volumi disponibili.
+
+
+. Se è stata selezionata l'opzione *Volume ID* come modalità di associazione, procedere come segue:
++
+.. Selezionare un cluster associato dall'elenco a discesa.
+.. Se il cluster non è registrato con il plug-in, immettere un ID utente dell'amministratore del cluster e una password dell'amministratore del cluster.
+.. Inserire un ID volume.
+.. Selezionare l'opzione *Set remote volume to Replication Target* (Imposta volume remoto su destinazione di replica) se si desidera impostare il volume remoto come destinazione nell'accoppiamento dei volumi. Il volume locale, se impostato su lettura/scrittura, diventa l'origine della coppia.
++
+
+IMPORTANT: Se si assegna un volume esistente come destinazione della replica, i dati su quel volume verranno sovrascritti. Come Best practice, è necessario utilizzare un nuovo volume come destinazione della replica.
+
++
+
+NOTE: È inoltre possibile assegnare l'origine e la destinazione della replica successivamente nel processo di associazione da *volumi* > *azioni* > *Modifica*. Per completare l'associazione, è necessario assegnare un'origine e una destinazione.
+
+
+
+. Selezionare *Pair*.
++
+
+NOTE: Dopo aver confermato l'associazione, i due cluster iniziano il processo di connessione dei volumi. Durante il processo di associazione, è possibile visualizzare i messaggi di avanzamento nella colonna Volume Status (Stato volume) della pagina Volume Pairs (coppie di volumi).
+
++
+
+NOTE: Se non è ancora stato assegnato un volume come destinazione della replica, la configurazione di accoppiamento non è completa. La coppia di volumi visualizza PausedMisconfigured (PausedDisconfigurato) fino a quando non vengono assegnate l'origine e la destinazione della coppia di volumi. È necessario assegnare un'origine e una destinazione per completare l'associazione del volume.
+
+. Selezionare *Protection* > *Volume Pairs* su uno dei cluster.
+. Verificare lo stato dell'associazione del volume.
+
+
+
+
+=== Associare i volumi utilizzando una chiave di accoppiamento
+
+È possibile associare un volume locale a un altro volume di un cluster remoto utilizzando una chiave di accoppiamento. Utilizzare questo metodo se l'amministratore del cluster dispone dell'accesso solo al cluster di origine. Questo metodo genera una chiave di accoppiamento che può essere utilizzata sul cluster remoto per completare la coppia di volumi.
+
+.Prima di iniziare
+* Assicurarsi che i cluster contenenti i volumi siano associati.
+* *Best Practices*: Impostare il volume di origine su Read/Write e il volume di destinazione su Replication Target. Il volume di destinazione non deve contenere dati e avere le caratteristiche esatte del volume di origine, ad esempio le dimensioni, l'impostazione 512e e la configurazione QoS. Se si assegna un volume esistente come destinazione della replica, i dati su quel volume verranno sovrascritti. Il volume di destinazione può avere dimensioni maggiori o uguali a quelle del volume di origine, ma non può essere più piccolo.
+
+
+.A proposito di questa attività
+Questa procedura descrive l'associazione di volumi tra due volumi utilizzando vCenter su siti locali e remoti. Per i volumi non controllati dal plug-in vCenter, è possibile avviare o completare l'associazione dei volumi utilizzando l'interfaccia utente Web Element.
+
+Per istruzioni sull'avvio o il completamento dell'associazione di volumi dall'interfaccia utente Web di Element, vedere https://docs.netapp.com/us-en/element-software/storage/task_replication_pair_volumes_using_a_pairing_key.html["Documentazione del software NetApp Element"^].
+
+
+NOTE: La chiave di accoppiamento del volume contiene una versione crittografata delle informazioni del volume e può contenere informazioni riservate. Condividere questa chiave solo in modo sicuro.
+
+[[open_management]]
+.Fasi
+. Dal vCenter che contiene il cluster locale, aprire la scheda *Management*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+
+
+. Selezionare la sottoscheda *Volumes*.
+. Dalla vista *Active*, selezionare la casella di controllo del volume che si desidera associare.
+. Selezionare *azioni*.
+. Selezionare *Volume Pairing* (Associazione volume).
+. Selezionare *cluster inaccessibile*.
+. Selezionare una modalità di replica:
++
+** *Real-time (Synchronous)*: Le scritture vengono riconosciute al client dopo il commit su entrambi i cluster di origine e di destinazione.
+** *Real-time (asincrono)*: Le scritture vengono riconosciute al client dopo il commit sul cluster di origine.
+** *Solo istantanee*: Vengono replicate solo le istantanee create nel cluster di origine. Le scritture attive dal volume di origine non vengono replicate.
+
+
+. Selezionare *genera chiave*.
++
+
+NOTE: Questa azione genera una chiave di testo per l'associazione e crea una coppia di volumi non configurata sul cluster locale. In caso contrario, è necessario eliminare manualmente la coppia di volumi.
+
+. Copiare la chiave di accoppiamento negli Appunti.
+. Selezionare *Chiudi*.
+. Rendere la chiave di accoppiamento accessibile all'amministratore del cluster nel sito del cluster remoto.
++
+
+NOTE: La chiave di accoppiamento del volume deve essere trattata in modo sicuro e non memorizzata in modo da consentire un accesso accidentale o non protetto.
+
++
+
+IMPORTANT: Non modificare i caratteri della chiave di accoppiamento. La chiave diventa non valida se viene modificata.
+
+. Dal vCenter che contiene il cluster remoto, <<open_management,Aprire la scheda Gestione>>.
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la sottoscheda *Volumes*.
+. Dalla vista *Active*, selezionare la casella di controllo del volume che si desidera associare.
+. Selezionare *azioni*.
+. Selezionare *Volume Pairing* (Associazione volume).
+. Selezionare *complete Cluster Pairing* (completa associazione cluster).
+. Incollare la chiave di accoppiamento dall'altro cluster nella casella *Pairing Key* (chiave di associazione).
+. Selezionare *completa associazione*.
++
+
+NOTE: Dopo aver confermato l'associazione, i due cluster iniziano il processo di connessione dei volumi. Durante il processo di associazione, è possibile visualizzare i messaggi di avanzamento nella colonna Volume Status (Stato volume) della pagina Volume Pairs (coppie di volumi). Se si verifica un errore imprevisto durante il processo di associazione, verificare la presenza di eventuali coppie di cluster non configurate sul cluster locale e remoto ed eseguire nuovamente l'associazione.
+
++
+
+IMPORTANT: Se non è ancora stato assegnato un volume come destinazione della replica, la configurazione di accoppiamento non è completa. La coppia di volumi visualizza "PausedMisconfigured" (PausedDisconfigurato) fino a quando non vengono assegnate l'origine e la destinazione della coppia di volumi. È necessario assegnare un'origine e una destinazione per completare l'associazione del volume.
+
+. Selezionare *Protection* > *Volume Pairs* su uno dei cluster.
+. Verificare lo stato dell'associazione del volume.
++
+
+NOTE: I volumi associati mediante una chiave di accoppiamento vengono visualizzati al termine del processo di associazione presso la postazione remota.
+
+
+
+
+
+=== Creare volumi di destinazione e associarli ai volumi locali
+
+È possibile associare due o più volumi locali con i volumi di destinazione associati su un cluster remoto. Questo processo crea un volume di destinazione della replica sul cluster remoto per ogni volume di origine locale selezionato. Utilizzare questo metodo se è disponibile l'accesso di Cluster Admin a entrambi i cluster su cui devono essere associati i volumi e il cluster remoto è controllato dal plug-in.
+
+Questo metodo utilizza l'ID del volume di ciascun volume sul cluster remoto per avviare una o più connessioni.
+
+.Prima di iniziare
+* Assicurarsi di disporre delle credenziali Cluster Admin per il cluster remoto.
+* Assicurarsi che i cluster contenenti i volumi siano associati utilizzando il plug-in.
+* Assicurarsi che il cluster remoto sia controllato dal plug-in.
+* Assicurarsi che la modalità di accesso di ciascun volume locale sia impostata su Read/Write (lettura/scrittura).
+
+
+.Fasi
+. Dal vCenter che contiene il cluster locale, aprire la scheda *Management*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la sottoscheda *Volumes*.
+. Dalla vista *Active*, selezionare due o più volumi da associare.
+. Selezionare *azioni*.
+. Selezionare *Volume Pairing* (Associazione volume).
+. Selezionare una *Replication Mode*:
++
+** *Real-time (Synchronous)*: Le scritture vengono riconosciute al client dopo il commit su entrambi i cluster di origine e di destinazione.
+** *Real-time (asincrono)*: Le scritture vengono riconosciute al client dopo il commit sul cluster di origine.
+** *Solo istantanee*: Vengono replicate solo le istantanee create nel cluster di origine. Le scritture attive dal volume di origine non vengono replicate.
+
+
+. Selezionare un cluster associato dall'elenco a discesa.
+. Selezionare un account sul cluster di destinazione per il volume di destinazione della replica.
+. (Facoltativo) digitare un prefisso o un suffisso per i nuovi nomi dei volumi nel cluster di destinazione.
++
+
+NOTE: Viene visualizzato un nome di volume di esempio con il nome modificato.
+
+. Selezionare *Crea coppie*.
++
+
+NOTE: Dopo aver confermato l'associazione, i due cluster iniziano il processo di connessione dei volumi. Durante il processo di associazione, è possibile visualizzare i messaggi di avanzamento nella colonna Volume Status (Stato volume) della pagina Volume Pairs (coppie di volumi). Al termine del processo, vengono creati nuovi volumi di destinazione e connessi al cluster remoto.
+
+. Selezionare *Protection* > *Volume Pairs* su uno dei cluster.
+. Verificare lo stato dell'associazione del volume.
+
+
+
+
+=== Assegnare un'origine e una destinazione di replica ai volumi accoppiati
+
+Se non è stato assegnato un volume come destinazione della replica durante l'associazione dei volumi, la configurazione non è completa. È possibile utilizzare questa procedura per assegnare un volume di origine e il relativo volume di destinazione della replica. Un'origine o una destinazione di replica può essere un volume in una coppia di volumi.
+
+È inoltre possibile utilizzare questa procedura per reindirizzare i dati da un volume di origine a un volume di destinazione remoto nel caso in cui il volume di origine non fosse disponibile.
+
+.Prima di iniziare
+È possibile accedere ai cluster contenenti i volumi di origine e di destinazione.
+
+.A proposito di questa attività
+Questa procedura descrive l'assegnazione di volumi di origine e replica tra due cluster utilizzando vCenter sui siti locali e remoti. Per i volumi non controllati dal plug-in vCenter, è possibile scegliere alternativamente https://docs.netapp.com/us-en/element-software/storage/task_replication_assign_replication_source_and_target_to_paired_volumes.html["assegnare un volume di origine o di replica"] Utilizzo dell'interfaccia utente Web Element.
+
+Un volume di origine della replica dispone di un account di accesso in lettura/scrittura. È possibile accedere a un volume di destinazione della replica solo dall'origine della replica come lettura/scrittura.
+
+*Best Practices*: Il volume di destinazione non deve contenere dati e avere le caratteristiche esatte del volume di origine, ad esempio dimensioni, impostazione 512e e configurazione QoS. Il volume di destinazione può avere dimensioni maggiori o uguali a quelle del volume di origine, ma non può essere più piccolo.
+
+.Fasi
+. Selezionare il cluster che contiene il volume associato che si desidera utilizzare come origine della replica dal punto di estensione del plug-in:
++
+** A partire dal plug-in Element vCenter 5.0 dal plug-in remoto NetApp > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element*.
+
+
+. Dal punto di estensione del plug-in Element per la versione di vCenter Server, selezionare la scheda *Gestione*.
+. Selezionare la sottoscheda *Volumes*.
+. Dalla vista *Active*, selezionare la casella di controllo del volume che si desidera modificare.
+. Selezionare *azioni*.
+. Selezionare *Modifica*.
+. Dall'elenco a discesa Access (accesso), selezionare *Read/Write* (lettura/scrittura).
++
+
+IMPORTANT: Se si sta annullando l'assegnazione di origine e destinazione, questa azione fa sì che la coppia di volumi visualizzi PausedMisconfigured (PausedMisconfigured) fino a quando non viene assegnata una nuova destinazione di replica. La modifica dell'accesso interrompe la replica del volume e interrompe la trasmissione dei dati. Assicurarsi di aver coordinato queste modifiche in entrambi i siti.
+
+. Selezionare *OK*.
+. Selezionare il cluster contenente il volume associato che si desidera utilizzare come destinazione della replica:
++
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione > Gestione*.
+** A partire dal plug-in Element vCenter 5.0 da *NetApp Remote Plugin > Gestione > Gestione*.
+
+
+. Selezionare la sottoscheda *Volumes*.
+. Dalla vista *Active*, selezionare la casella di controllo del volume che si desidera modificare.
+. Selezionare *azioni*.
+. Selezionare *Modifica*.
+. Nell'elenco a discesa *Access*, selezionare *Replication Target*.
++
+
+IMPORTANT: Se si assegna un volume esistente come destinazione della replica, i dati su quel volume verranno sovrascritti. Come Best practice, è necessario utilizzare un nuovo volume come destinazione della replica.
+
+. Selezionare *OK*.
+
+
+
+
+== Convalidare la replica del volume
+
+Una volta replicato un volume, assicurarsi che i volumi di origine e di destinazione siano attivi. In stato attivo, i volumi vengono associati, i dati vengono inviati dall'origine al volume di destinazione e i dati sono sincronizzati.
+
+.Fasi
+. Dal vCenter che contiene il cluster locale, aprire la scheda *Protection*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > protezione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > protezione*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la sottoscheda *coppie di volumi*.
+. Verificare che lo stato del volume sia attivo.
+
+
+
+
+== Eliminare una relazione di volume dopo la replica
+
+Una volta completata la replica e non è più necessaria la relazione di accoppiamento del volume, è possibile eliminare la relazione del volume.
+
+Vedere <<Eliminare una coppia di volumi>>.
+
+
+
+== Gestire le relazioni dei volumi
+
+È possibile gestire le relazioni dei volumi in molti modi, ad esempio mettendo in pausa la replica, invertendo l'accoppiamento dei volumi, modificando la modalità di replica, eliminando una coppia di volumi o eliminando una coppia di cluster.
+
+* <<Mettere in pausa la replica>>
+* <<Modificare la modalità di replica>>
+* <<Eliminare una coppia di volumi>>
+* <<Eliminare una coppia di cluster>>
+
+
+
+
+=== Mettere in pausa la replica
+
+È possibile modificare le proprietà delle coppie di volumi per sospendere manualmente la replica.
+
+.Fasi
+. Dal vCenter che contiene il cluster locale, aprire la scheda *Protection*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > protezione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > protezione*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la sottoscheda *coppie di volumi*.
+. Selezionare la casella di controllo relativa alla coppia di volumi che si desidera modificare.
+. Selezionare *azioni*.
+. Selezionare *Modifica*.
+. Mettere in pausa o avviare manualmente il processo di replica.
++
+
+IMPORTANT: La sospensione o la ripresa manuale della replica del volume causerà la cessazione o la ripresa della trasmissione dei dati. Assicurarsi di aver coordinato queste modifiche in entrambi i siti.
+
+. Selezionare *Save Changes* (Salva modifiche).
+
+
+
+
+=== Modificare la modalità di replica
+
+È possibile modificare le proprietà della coppia di volumi per apportare modifiche alla modalità di replica della relazione della coppia di volumi.
+
+.Fasi
+. Dal vCenter che contiene il cluster locale, aprire la scheda *Protection*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > protezione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > protezione*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la sottoscheda *coppie di volumi*.
+. Selezionare la casella di controllo relativa alla coppia di volumi che si desidera modificare.
+. Selezionare *azioni*.
+. Selezionare *Modifica*.
+. Selezionare una nuova modalità di replica:
++
+
+IMPORTANT: La modifica della modalità di replica provoca la modifica immediata della modalità. Assicurarsi di aver coordinato queste modifiche in entrambi i siti.
+
++
+** *Real-time (Synchronous)*: Le scritture vengono riconosciute al client dopo il commit sia sul cluster di origine che su quello di destinazione.
+** *Real-time (asincrono)*: Le scritture vengono riconosciute al client dopo il commit sul cluster di origine.
+** *Solo istantanee*: Vengono replicate solo le istantanee create nel cluster di origine. Le scritture attive dal volume di origine non vengono replicate.
+
+
+. Selezionare *Save Changes* (Salva modifiche).
+
+
+
+
+=== Eliminare una coppia di volumi
+
+È possibile eliminare una coppia di volumi se si desidera rimuovere un'associazione di coppia tra due volumi.
+
+.A proposito di questa attività
+Questa procedura descrive l'eliminazione di una relazione di associazione di un volume tra due volumi utilizzando vCenter su siti locali e remoti.
+
+In alternativa, è possibile utilizzare volumi non controllati dal plug-in vCenter link:https://docs.netapp.com/us-en/element-software/storage/task_replication_delete_volume_relationship_after_replication.html["eliminare una coppia di volumi"] Utilizzo dell'interfaccia utente Web Element.
+
+.Fasi
+. Dal vCenter che contiene il cluster locale, aprire la scheda *Protection*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > protezione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > protezione*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la sottoscheda *coppie di volumi*.
+. Selezionare una o più coppie di volumi da eliminare.
+. Selezionare *azioni*.
+. Selezionare *Delete* (Elimina).
+. Confermare i dettagli di ciascuna coppia di volumi.
++
+
+NOTE: Per i cluster non gestiti dal plug-in, questa azione elimina solo l'estremità della coppia di volumi sul cluster locale. È necessario eliminare manualmente l'estremità della coppia di volumi dal cluster remoto per rimuovere completamente la relazione di accoppiamento.
+
+. (Facoltativo per i cluster gestiti dal plug-in) selezionare la casella di controllo *Change Replication Target Access to* (Cambia accesso destinazione replica su*) e selezionare una nuova modalità di accesso per il volume di destinazione della replica. Questa nuova modalità di accesso verrà applicata dopo la rimozione della relazione di associazione del volume.
+. Selezionare *Sì*.
+
+
+
+
+=== Eliminare una coppia di cluster
+
+È possibile eliminare una relazione di accoppiamento dei cluster tra due cluster utilizzando vCenter sui siti locali e remoti. Per rimuovere completamente una relazione di accoppiamento del cluster, è necessario rimuovere le estremità della coppia di cluster sia dal cluster locale che da quello remoto.
+
+È possibile utilizzare il plug-in vCenter per eliminare un'estremità della coppia di cluster
+
+In alternativa, è possibile utilizzare i cluster non controllati dal plug-in vCenter link:https://docs.netapp.com/us-en/element-software/storage/task_replication_delete_cluster_pair.html["eliminare un'estremità di coppia di cluster"] Utilizzo dell'interfaccia utente Web Element.
+
+.Fasi
+. Dal vCenter che contiene il cluster locale, aprire la scheda *Protection*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > protezione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > protezione*.
+
+
+. Selezionare la sottoscheda *Cluster Pairs*.
+. Selezionare la casella di controllo della coppia di cluster che si desidera eliminare.
+. Selezionare *azioni*.
+. Selezionare *Delete* (Elimina).
+. Confermare l'azione.
++
+
+NOTE: Questa azione elimina solo l'estremità della coppia di cluster sul cluster locale. È necessario eliminare manualmente l'estremità della coppia di cluster dal cluster remoto per rimuovere completamente la relazione di accoppiamento.
+
+. Ripetere i passaggi dal cluster remoto nell'associazione del cluster.
+
+
+
+
+== Messaggi e avvisi relativi all'associazione dei volumi
+
+È possibile visualizzare le informazioni relative ai volumi che sono stati associati o che sono in fase di associazione nella pagina Volume Pairs (coppie di volumi) della scheda Protection (protezione) dal punto di estensione del plug-in. A partire dal plug-in Element vCenter 5.0, selezionare la scheda Gestione dal punto di estensione del plug-in remoto NetApp Element. Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare il punto di estensione Gestione NetApp Element.
+
+Il sistema visualizza i messaggi di associazione e di avanzamento nella colonna Volume Status (Stato volume).
+
+* <<Messaggi di associazione del volume>>
+* <<Avvisi di associazione del volume>>
+
+
+
+
+=== Messaggi di associazione del volume
+
+È possibile visualizzare i messaggi durante il processo di associazione iniziale nella pagina coppie di volumi della scheda protezione dal punto di estensione del plug-in. Questi messaggi vengono visualizzati nella colonna Volume Status (Stato volume) e possono essere visualizzati sia sul lato di origine che sul lato di destinazione dell'associazione.
+
+* *PausedDisconnected*: Timeout replica di origine o sincronizzazione RPC. La connessione al cluster remoto è stata persa. Controllare le connessioni di rete al cluster.
+* *RisumingConnected**: La sincronizzazione della replica remota è ora attiva. Avvio del processo di sincronizzazione e attesa dei dati.
+* *ResumingRRSync**: Viene creata una singola copia helix dei metadati del volume nel cluster associato.
+* *ResumingLocalSync**: Viene creata una copia a doppia elica dei metadati del volume nel cluster associato.
+* *ResumingDataTransfer**: Il trasferimento dei dati è stato ripreso.
+* *Attivo*: I volumi sono associati e i dati vengono inviati dall'origine al volume di destinazione e i dati sono sincronizzati.
+* *Idle*: Nessuna attività di replica in corso.
+
+
+*Questo processo è basato sul volume di destinazione e potrebbe non essere visualizzato sul volume di origine.
+
+
+
+=== Avvisi di associazione del volume
+
+È possibile visualizzare i messaggi di avviso dopo aver associato i volumi nella pagina Volume Pairs (coppie di volumi) della scheda Protection (protezione) dal punto di estensione del plug-in. Questi messaggi vengono visualizzati nella colonna Volume Status (Stato volume) e possono essere visualizzati sia sul lato di origine che sul lato di destinazione dell'associazione.
+
+Questi messaggi possono essere visualizzati sia sul lato di origine che su quello di destinazione dell'associazione, se non diversamente indicato.
+
+* *PausedClusterFull*: Poiché il cluster di destinazione è pieno, la replica di origine e il trasferimento di dati in blocco non possono procedere. Il messaggio viene visualizzato solo sul lato di origine della coppia.
+* *PausedExceededMaxSnapshotCount*: Il volume di destinazione ha già il numero massimo di snapshot e non può replicare ulteriori snapshot.
+* *PausedManual*: Il volume locale è stato messo in pausa manualmente. Prima di riprendere la replica, è necessario che la replica sia sospesa.
+* *PausedManualRemote*: Il volume remoto è in modalità di pausa manuale. È richiesto l'intervento manuale per riattivare il volume remoto prima che la replica venga ripresa.
+* *PausedMisconfigured*: In attesa di un'origine e di una destinazione attive. È richiesto l'intervento manuale per riprendere la replica.
+* *PausedQoS*: La QoS di destinazione non è riuscita a sostenere i/o in entrata. La replica riprende automaticamente. Il messaggio viene visualizzato solo sul lato di origine della coppia.
+* *PausedSlowLink*: Collegamento lento rilevato e replica interrotta. La replica riprende automaticamente. Il messaggio viene visualizzato solo sul lato di origine della coppia.
+* *PausedVolumeSizeMismatch*: Il volume di destinazione è più piccolo del volume di origine.
+* *PausedXCopy*: Viene inviato un comando SCSI XCOPY a un volume di origine. Il comando deve essere completato prima che la replica possa riprendere. Il messaggio viene visualizzato solo sul lato di origine della coppia.
+* *StoppedMisconfigured*: È stato rilevato un errore di configurazione permanente. Il volume remoto è stato disaccoppiato o disaccoppiato. Non è possibile eseguire alcuna azione correttiva; è necessario stabilire una nuova associazione.
+
+
+[discrete]
+== Trova ulteriori informazioni
+
+* https://docs.netapp.com/us-en/hci/index.html["Documentazione NetApp HCI"^]
+* https://www.netapp.com/data-storage/solidfire/documentation["Pagina SolidFire and Element Resources"^]
+

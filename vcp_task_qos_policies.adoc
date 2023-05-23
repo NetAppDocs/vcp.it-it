@@ -1,0 +1,186 @@
+---
+sidebar: sidebar 
+permalink: vcp_task_qos_policies.html 
+summary: È possibile impostare e modificare le policy QoS da applicare ai volumi nel cluster di storage. 
+keywords: netapp, qos policy, quality of service, qos policies, vcp, vcenter, element 
+---
+= Creare e gestire policy di QoS per volumi
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Una policy QoS (Quality of Service) consente di creare e salvare un'impostazione di qualità del servizio standardizzata che può essere applicata a molti volumi. Il cluster selezionato deve essere l'elemento 10.0 o successivo per utilizzare i criteri QoS; in caso contrario, le funzioni dei criteri QoS non sono disponibili.
+
+Utilizzando l'estensione del plug-in, è possibile configurare e gestire QoSSIOC completando le seguenti attività:
+
+* <<Creare una policy QoS>>
+* <<Applicare una policy di QoS ai volumi>>
+* <<Modificare l'associazione dei criteri QoS di un volume>>
+* <<Modificare un criterio QoS>>
+* <<Eliminare una policy QoS>>
+
+
+
+
+== Creare una policy QoS
+
+È possibile creare policy QoS e applicarle a volumi che devono avere performance equivalenti.
+
+
+NOTE: L'automazione QoSSIOC e le policy QoS non devono essere utilizzate insieme. Se si utilizzano policy QoS, non attivare QoSSIOC. QoSSIOC sovrascrive e regola i valori di QoS per le impostazioni di QoS del volume.
+
+.Fasi
+. Dal plug-in vCenter, aprire la scheda *Gestione*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Fare clic sulla sottoscheda *QoS Policies*.
+. Fare clic su *Crea policy QoS*.
+. Inserire il nome * Policy Name*.
++
+
+TIP: Utilizzare le Best practice di denominazione descrittive. Ciò è particolarmente importante se nell'ambiente vengono utilizzati più cluster o server vCenter.
+
+. Inserire i valori minimo IOPS, massimo IOPS e burst IOPS.
+. Fare clic su *OK*.
+
+
+
+
+== Applicare una policy di QoS ai volumi
+
+È possibile applicare una policy QoS esistente a più volumi. Utilizzare questo processo per applicare in blocco un criterio a uno o più volumi.
+
+.Di cosa hai bisogno
+Il criterio QoS che si desidera applicare in blocco è stato <<Creare una policy QoS,creato>>.
+
+.Fasi
+. Dal plug-in vCenter, aprire la scheda *Gestione*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Fare clic sulla sottoscheda *Volumes*.
+. Selezionare la casella di controllo per ciascun volume a cui si desidera applicare una policy QoS.
+. Fare clic su *azioni*.
+. Nel menu visualizzato, selezionare *Apply QoS Policy* (Applica policy QoS).
+. Nella finestra di dialogo, selezionare il criterio QoS dall'elenco a discesa da applicare ai volumi selezionati.
+. Fare clic su *OK*.
+
+
+
+
+== Modificare l'associazione dei criteri QoS di un volume
+
+È possibile rimuovere un'associazione di policy QoS da un volume o selezionare una policy QoS diversa o una QoS personalizzata.
+
+.Di cosa hai bisogno
+Il volume che si desidera modificare è <<Applicare una policy di QoS ai volumi,associato>> Con una policy QoS.
+
+.Fasi
+. Dal plug-in vCenter, aprire la scheda *Gestione*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Fare clic sulla sottoscheda *Volumes*.
+. Selezionare la casella di controllo per un volume che contiene un criterio QoS che si desidera modificare.
+. Fare clic su *azioni*.
+. Nel menu visualizzato, selezionare *Edit* (Modifica).
+. Nella finestra di dialogo in *qualità del servizio*, selezionare un nuovo criterio QoS o impostazioni personalizzate da applicare al volume.
+. Se si scelgono impostazioni personalizzate, modificare i valori *min IOPS*, *Max IOPS* e *Burst IOPS*.
++
+
+NOTE: È inoltre possibile fare clic su *Reset Default QoS* (Ripristina QoS predefinita) per ripristinare i valori IOPS predefiniti.
+
+. Fare clic su *OK*.
+
+
+
+
+== Modificare un criterio QoS
+
+È possibile modificare il nome di un criterio QoS esistente o i valori associati al criterio. La modifica dei valori delle performance dei criteri QoS influisce sulla QoS per tutti i volumi associati al criterio.
+
+.Fasi
+. Dal plug-in vCenter, aprire la scheda *Gestione*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Fare clic sulla sottoscheda *QoS Policies*.
+. Selezionare la casella di controllo relativa al criterio QoS che si desidera modificare.
+. Fare clic su *azioni*.
+. Nel menu visualizzato, selezionare *Edit* (Modifica).
+. Nella finestra di dialogo *Edit QoS Policy* (Modifica policy QoS), modificare le seguenti proprietà in base alle necessità:
++
+** *Policy Name* (Nome policy): Il nome definito dall'utente per la policy QoS.
+** *IOPS min*: Il numero minimo di IOPS garantito per il volume.
+** *IOPS max*: Il numero massimo di IOPS consentito per il volume.
+** *Burst IOPS*: Il numero massimo di IOPS consentito per un breve periodo di tempo per il volume. Impostazione predefinita = 15,000.
++
+
+NOTE: È inoltre possibile fare clic su Reset Default QoS (Ripristina QoS predefinita) per ripristinare i valori IOPS predefiniti.
+
+
+
+. Fare clic su *OK*.
+
+
+
+
+== Eliminare una policy QoS
+
+È possibile eliminare una policy QoS se non è più necessaria. Quando si elimina un criterio QoS, tutti i volumi associati al criterio mantengono i valori QoS precedentemente definiti dal criterio, ma come QoS dei singoli volumi. Qualsiasi associazione con la policy QoS eliminata viene rimossa.
+
+.Fasi
+. Dal plug-in vCenter, aprire la scheda *Gestione*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Fare clic sulla sottoscheda *QoS Policies*.
+. Selezionare la casella di controllo relativa al criterio QoS che si desidera eliminare.
+. Fare clic su *azioni*.
+. Nel menu visualizzato, selezionare *Delete* (Elimina).
+. Confermare l'azione.
+
+
+
+
+== Trova ulteriori informazioni
+
+* https://docs.netapp.com/us-en/hci/index.html["Documentazione NetApp HCI"^]
+* https://www.netapp.com/data-storage/solidfire/documentation["Pagina SolidFire and Element Resources"^]
+

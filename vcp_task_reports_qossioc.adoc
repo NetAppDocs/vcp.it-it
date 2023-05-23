@@ -1,0 +1,65 @@
+---
+sidebar: sidebar 
+permalink: vcp_task_reports_qossioc.html 
+summary: È possibile visualizzare informazioni sulle sessioni iSCSI connesse al cluster selezionato nel plug-in NetApp Element per VMware vCenter Server. 
+keywords: netapp, hci, vcp, vcenter, element, monitor, report, qossioc, cluster, performance 
+---
+= Monitorare il tiering delle performance delle macchine virtuali con eventi QoSSIOC
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+È possibile visualizzare gli eventi relativi a QoSSIOC quando una macchina virtuale con un datastore abilitato alla QoS viene riconfigurata o emessa una potenza o un evento guest.
+
+È possibile visualizzare gli eventi QoSSIOC dal punto di estensione del plug-in nel plug-in NetApp Element per vCenter Server.
+
+Gli eventi QoSSIOC vengono visualizzati da cluster aggiunti localmente. In un ambiente Linked Mode, accedere a vSphere Web Client in cui il cluster è stato aggiunto localmente per visualizzare gli eventi QoSSIOC per quel cluster.
+
+[NOTE]
+====
+* A partire dal plug-in Element vCenter 5.0, da utilizzare link:vcp_concept_linkedmode.html["Modalità collegata vCenter"], Il plug-in Element viene registrato da un nodo di gestione separato per ogni server vCenter che gestisce i cluster di storage NetApp SolidFire.
+* Utilizzo del plug-in NetApp Element per vCenter Server 4.10 e versioni precedenti per gestire le risorse cluster di altri vCenter Server utilizzando link:vcp_concept_linkedmode.html["Modalità collegata vCenter"] è limitato solo ai cluster di storage locali.
+
+
+====
+.Di cosa hai bisogno
+* È necessario aggiungere ed eseguire almeno un cluster.
+* Il servizio QoSSIOC deve essere configurato e verificato utilizzando la pagina QoSSIOC Settings (Impostazioni QoSSIOC) del plug-in.
+* Almeno un datastore deve avere l'automazione QoSSIOC attivata.
+
+
+.Fasi
+. In vSphere Web Client, aprire la scheda *eventi QoSSIOC*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Configurazione > Eventi QoSSIOC*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Configurazione NetApp Element > Eventi QoSSIOC*.
+
+
+
+
+
+
+== Dati degli eventi QoSSIOC
+
+* *Data*: La data e l'ora dell'evento QoSSIOC.
+* *Nome datastore*: Il nome del datastore definito dall'utente.
+* *Cluster IP*: L'indirizzo IP del cluster contenente il datastore da cui ha avuto origine l'evento.
+* *Volume ID*: L'ID generato dal sistema per il volume associato.
+* *Min IOP*: L'impostazione corrente di QoS IOPS minimo del volume.
+* *Max IOPS*: L'impostazione di QoS IOPS massima corrente del volume.
+* *IOPS burst*: L'impostazione corrente di QoS burst massimo del volume.
+* *Burst Time* (tempo di burst): Il periodo di tempo in cui è consentito un burst.
+
+
+
+
+== Trova ulteriori informazioni
+
+* https://docs.netapp.com/us-en/hci/index.html["Documentazione NetApp HCI"^]
+* https://www.netapp.com/data-storage/solidfire/documentation["Pagina SolidFire and Element Resources"^]
+

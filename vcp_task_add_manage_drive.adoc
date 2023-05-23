@@ -1,0 +1,126 @@
+---
+sidebar: sidebar 
+permalink: vcp_task_add_manage_drive.html 
+summary: È possibile aggiungere e gestire dischi al cluster utilizzando il plug-in. 
+keywords: netapp, drives, add, manage, remove, view vcp, vcenter, element 
+---
+= Aggiungere e gestire dischi
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+È possibile aggiungere dischi a un cluster, visualizzare dischi esistenti e rimuovere dischi utilizzando il punto di estensione del plug-in.
+
+* <<Aggiungere le unità disponibili a un cluster>>
+* <<Visualizza i dettagli del disco>>
+* <<Rimuovere un disco>>
+
+
+
+
+== Aggiungere le unità disponibili a un cluster
+
+È possibile aggiungere dischi a un cluster utilizzando il punto di estensione del plug-in. Quando si aggiunge un nodo al cluster o si installano nuove unità in un nodo esistente, le unità vengono automaticamente registrate come `Available`. È necessario aggiungere i dischi al cluster prima che ciascun disco possa partecipare al cluster.
+
+.A proposito di questa attività
+Le unità non vengono visualizzate nell'elenco Available (disponibili) quando sussistono le seguenti condizioni:
+
+* I dischi sono in un `Active`, `Removing`, `Erasing`, o. `Failed` stato.
+* Il nodo di cui fa parte l'unità `Pending` stato.
+
+
+.Fasi
+. In vSphere Web Client, aprire la scheda *Cluster*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > cluster*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > cluster*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Dalla sottoscheda *Drives*, selezionare *Available* dall'elenco a discesa per visualizzare l'elenco dei dischi disponibili.
+. Aggiungere i dischi come segue:
++
+.. Selezionare la casella di controllo per ciascun disco da aggiungere.
+.. Fare clic su *Add Drives* (Aggiungi unità).
+
+
+. Esaminare i dettagli delle unità che si intende aggiungere e confermare l'azione.
+
+
+
+
+== Visualizza i dettagli del disco
+
+È possibile visualizzare un elenco dei dischi attivi nel cluster utilizzando la vista Active (attiva) nella pagina Drives (unità) della scheda Cluster (cluster) dal punto di estensione del plug-in. È possibile modificare la visualizzazione selezionando le opzioni disponibili utilizzando il filtro a discesa.
+
+.A proposito di questa attività
+Quando si inizializza per la prima volta un cluster, l'elenco delle unità attive è vuoto. È possibile aggiungere dischi non assegnati a un cluster ed elencati nella scheda Available (disponibili) dopo la creazione di un nuovo cluster.
+
+.Fasi
+. In vSphere Web Client, aprire la scheda *Cluster*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > cluster*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > cluster*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la sottoscheda *Drives*.
+. Selezionare la vista *Active*.
+. Visualizzare i dettagli delle unità attualmente attive nel sistema.
++
+È possibile visualizzare informazioni quali ID del disco, capacità e stato di ciascun disco e informazioni sul nodo in cui si trova il disco.
+
+
+
+
+
+== Rimuovere un disco
+
+È possibile rimuovere un disco da un cluster utilizzando il punto di estensione del plug-in. È possibile eseguire questa operazione quando si riduce la capacità del cluster o si prepara a sostituire i dischi in via di esaurimento. La rimozione di un disco porta il disco offline. Tutti i dati presenti sul disco vengono rimossi e migrati su altri dischi del cluster prima che il disco venga rimosso dal cluster. La migrazione dei dati ad altri dischi attivi nel sistema può richiedere da alcuni minuti a un'ora, a seconda dell'utilizzo della capacità e dell'i/o attivo nel cluster.
+
+.A proposito di questa attività
+Quando si rimuove un disco in un `Failed` stato, il disco non viene restituito a. `Available` oppure `Active` stati. Al contrario, l'unità non è disponibile per l'utilizzo nel cluster.
+
+.Fasi
+. In vSphere Web Client, aprire la scheda *Cluster*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > cluster*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > cluster*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare *All* dall'elenco a discesa per visualizzare l'elenco completo dei dischi.
+. Rimuovere le unità come segue:
++
+.. Selezionare la casella di controllo per ciascun disco che si desidera rimuovere.
+.. Fare clic su *Rimuovi unità*.
+
+
+. Confermare l'azione.
++
+
+NOTE: Se la capacità non è sufficiente per rimuovere i dischi attivi prima di rimuovere un nodo, viene visualizzato un messaggio di errore quando si conferma la rimozione del disco.
+
+
+
+
+
+== Trova ulteriori informazioni
+
+* https://docs.netapp.com/us-en/hci/index.html["Documentazione NetApp HCI"^]
+* https://www.netapp.com/data-storage/solidfire/documentation["Pagina SolidFire and Element Resources"^]
+

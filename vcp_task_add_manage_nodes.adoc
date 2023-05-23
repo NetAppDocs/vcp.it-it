@@ -1,0 +1,216 @@
+---
+sidebar: sidebar 
+permalink: vcp_task_add_manage_nodes.html 
+summary: È possibile creare e gestire nodi nella configurazione del cluster utilizzando il plug-in. 
+keywords: netapp, nodes, create, manage, delete, view vcp, vcenter, element 
+---
+= Aggiungere e gestire nodi
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Utilizzando il plug-in, è possibile aggiungere https://docs.netapp.com/us-en/hci/docs/concept_hci_nodes.html#storage-nodes["nodi di storage"] quando viene creato un cluster o quando è necessario più storage. È inoltre possibile aggiungere nodi di storage che eseguono il software Element. È necessario aggiungere nodi di calcolo NetApp HCI all'esterno del plug-in in vSphere.
+
+* <<Aggiungere un nodo a un cluster>>
+* <<Visualizza i dettagli del nodo>>
+* <<Riavviare un nodo>>
+* <<Chiudere un nodo>>
+* <<Rimuovere un nodo da un cluster>>
+
+
+
+
+== Aggiungere un nodo a un cluster
+
+È possibile aggiungere nodi di storage al cluster utilizzando il plug-in vCenter.
+
+.Di cosa hai bisogno
+* Il nodo che si sta aggiungendo è stato impostato, acceso e configurato.
+* Affinché il software sia compatibile, i numeri di versione principali o minori del software su ciascun nodo di un cluster devono corrispondere. Ad esempio, Element 9.0 non è compatibile con la versione 9.1.
+
+
+
+NOTE: Se il nodo che si sta aggiungendo ha una versione principale o minore del software NetApp Element diversa da quella in esecuzione sul cluster, il cluster aggiorna in modo asincrono il nodo alla versione del software NetApp Element in esecuzione sul master del cluster. Una volta aggiornato, il nodo si aggiunge automaticamente al cluster. Durante questo processo asincrono, il nodo si trova in una `pendingActive` stato.
+
+.A proposito di questa attività
+I nodi richiedono la configurazione iniziale quando vengono accesi per la prima volta. Una volta impostato e configurato, il nodo si registra sul cluster identificato al momento della configurazione e viene visualizzato nell'elenco dei nodi in sospeso nella pagina *Cluster > Nodes* del punto di estensione del plug-in.
+
+È possibile aggiungere nodi di capacità inferiore o superiore a un cluster esistente.
+
+La procedura è la stessa per l'aggiunta di nodi FC o di storage che eseguono il software NetApp Element.
+
+.Fasi
+. In vSphere Web Client, aprire la scheda *Cluster*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > cluster*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > cluster*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Fare clic sulla sottoscheda *Nodes*.
+. Selezionare *Pending* dall'elenco a discesa per visualizzare l'elenco dei nodi.
+. Per aggiungere uno o più nodi, attenersi alla seguente procedura:
++
+.. Selezionare la casella di controllo per ciascun nodo che si desidera aggiungere.
+.. Fare clic su *Aggiungi nodo*.
+
+
+. Esaminare i dettagli dei nodi che si intende aggiungere e confermare l'azione.
++
+Una volta completata l'azione, il nodo viene visualizzato nell'elenco dei nodi attivi per il cluster.
+
+
+
+
+
+== Visualizza i dettagli del nodo
+
+È possibile visualizzare un elenco dei nodi nel cluster nella pagina nodi della scheda Cluster dal punto di estensione del plug-in. Selezionare Active view (Vista attiva) per visualizzare l'elenco dei nodi attivi. È possibile modificare la visualizzazione selezionando `Pending`, `PendingActive`, e. `All` opzioni che utilizzano il filtro a discesa.
+
+.Fasi
+. In vSphere Web Client, aprire la scheda *Cluster*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > cluster*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > cluster*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la sottoscheda *Nodes*.
+. Selezionare la vista *Active*.
+. Visualizzare i dettagli dei nodi nel cluster di storage.
++
+È possibile visualizzare informazioni quali ID dei nodi, nome e stato di ciascun nodo, IOPS configurati, tipo di nodo, numero di dischi attivi in ciascun nodo e informazioni di rete relative a ciascun nodo.
+
+
+
+
+
+== Riavviare un nodo
+
+È possibile riavviare uno o più nodi attivi in un cluster utilizzando il punto di estensione del plug-in.
+
+.Di cosa hai bisogno
+L'i/o è stato interrotto e tutte le sessioni iSCSI sono state disconnesse se si stanno riavviando più di un nodo contemporaneamente.
+
+.A proposito di questa attività
+Per riavviare il cluster, è possibile selezionare tutti i nodi del cluster ed eseguire un riavvio.
+
+
+IMPORTANT: Questo metodo riavvia tutti i servizi di rete su un nodo, causando la perdita temporanea della connettività di rete.
+
+
+NOTE: Questa funzione non è disponibile nei cluster SDS aziendali di SolidFire.
+
+.Fasi
+. In vSphere Web Client, aprire la scheda *Cluster*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > cluster*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > cluster*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la sottoscheda *Nodes*.
++
+.. Dalla vista *Active*, selezionare la casella di controllo per ciascun nodo che si desidera riavviare.
+.. Fare clic su *azioni*.
+.. Selezionare *Riavvia*.
+
+
+. Confermare l'azione.
+
+
+
+
+== Chiudere un nodo
+
+È possibile arrestare uno o più nodi attivi in un cluster utilizzando il punto di estensione del plug-in. Per arrestare il cluster, è possibile selezionare tutti i nodi del cluster ed eseguire una chiusura simultanea.
+
+.Di cosa hai bisogno
+L'i/o è stato interrotto e tutte le sessioni iSCSI sono state disconnesse se si stanno riavviando più di un nodo contemporaneamente.
+
+.A proposito di questa attività
+
+NOTE: Questa funzione non è disponibile nei cluster SDS aziendali di SolidFire.
+
+.Fasi
+. In vSphere Web Client, aprire la scheda *Cluster*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > cluster*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > cluster*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la sottoscheda *Nodes*.
++
+.. Dalla vista *Active*, selezionare la casella di controllo per ciascun nodo che si desidera chiudere.
+.. Fare clic su *azioni*.
+.. Selezionare *Shutdown* (Chiudi sessione).
+
+
+. Confermare l'azione.
+
+
+
+NOTE: Se un nodo è rimasto inattivo per più di 5.5 minuti in qualsiasi condizione di shutdown, il software NetApp Element determina che il nodo non torna a unirsi al cluster. La protezione dei dati Double Helix inizia l'attività di scrittura di singoli blocchi replicati in un altro nodo per replicare i dati. A seconda del periodo di inattività di un nodo, potrebbe essere necessario aggiungerne i dischi al cluster dopo che il nodo è stato riportato in linea.
+
+
+
+== Rimuovere un nodo da un cluster
+
+È possibile rimuovere i nodi da un cluster senza interruzioni del servizio quando lo storage non è più necessario o richiede manutenzione.
+
+.Di cosa hai bisogno
+Tutti i dischi nel nodo sono stati rimossi dal cluster. Non è possibile rimuovere un nodo fino a. `RemoveDrives` il processo è stato completato e tutti i dati sono stati migrati lontano dal nodo.
+
+.A proposito di questa attività
+Per la connettività FC in un cluster NetApp Element sono necessari almeno due nodi FC. Se è collegato un solo nodo FC, il sistema attiva gli avvisi nel registro eventi finché non si aggiunge un altro nodo FC al cluster, anche se tutto il traffico di rete FC continua a funzionare con un solo nodo FC.
+
+.Fasi
+. In vSphere Web Client, aprire la scheda *Cluster*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > cluster*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > cluster*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la sottoscheda *Nodes*.
+. Per rimuovere uno o più nodi, attenersi alla seguente procedura:
++
+.. Dalla vista *Active*, selezionare la casella di controllo per ciascun nodo che si desidera rimuovere.
+.. Fare clic su *azioni*.
+.. Selezionare *Rimuovi*.
+
+
+. Confermare l'azione.
++
+Tutti i nodi rimossi da un cluster vengono visualizzati nell'elenco dei nodi in sospeso.
+
+
+
+
+
+== Trova ulteriori informazioni
+
+* https://docs.netapp.com/us-en/hci/index.html["Documentazione NetApp HCI"^]
+* https://www.netapp.com/data-storage/solidfire/documentation["Pagina SolidFire and Element Resources"^]
+

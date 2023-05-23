@@ -1,0 +1,52 @@
+---
+sidebar: sidebar 
+permalink: vcp_task_reports_iscsi.html 
+summary: È possibile visualizzare informazioni sulle sessioni iSCSI connesse al cluster selezionato nel plug-in NetApp Element per VMware vCenter Server. 
+keywords: netapp, hci, vcp, vcenter, element, monitor, report, iscsi, connection 
+---
+= Monitorare le sessioni iSCSI per determinare lo stato della connessione
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+È possibile visualizzare informazioni sulle sessioni iSCSI connesse al cluster selezionato nel plug-in NetApp Element per VMware vCenter Server.
+
+.Fasi
+. Dal plug-in vCenter, aprire la scheda *Reporting*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > creazione di report*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > rapporti*.
+
+
+. Selezionare *sessioni iSCSI*.
+
+
+
+
+== Dati della sessione iSCSI
+
+* *Node*: Nodo che ospita la partizione dei metadati primaria per il volume.
+* *Account*: Il nome dell'account proprietario del volume. Se il valore è vuoto, viene visualizzato un trattino (-).
+* *Volume*: Il nome del volume identificato nel nodo.
+* *Volume ID*: ID del volume associato all'IQN di destinazione.
+* *Initiator ID*: ID generato dal sistema per l'initiator.
+* *Alias iniziatore*: Un nome opzionale per l'iniziatore che semplifica la ricerca dell'iniziatore in un elenco lungo.
+* *Initiator IP*: L'indirizzo IP dell'endpoint che avvia la sessione.
+* *Initiator IQN*: L'IQN dell'endpoint che avvia la sessione.
+* *Target IP*: L'indirizzo IP del nodo che ospita il volume.
+* *Target IQN*: L'IQN del volume.
+* *Creato il*: Data in cui è stata stabilita la sessione.
+
+
+
+
+== Trova ulteriori informazioni
+
+* https://docs.netapp.com/us-en/hci/index.html["Documentazione NetApp HCI"^]
+* https://www.netapp.com/data-storage/solidfire/documentation["Pagina SolidFire and Element Resources"^]
+

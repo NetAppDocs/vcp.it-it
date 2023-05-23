@@ -1,0 +1,31 @@
+---
+sidebar: sidebar 
+permalink: vcp_concept_protection_domains.html 
+summary:  
+keywords: netapp, vcp, element, plugin, plug-in, protection, domain 
+---
+= Domini di protezione
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Un dominio di protezione è un nodo o un insieme di nodi raggruppati in modo che qualsiasi nodo o tutti i nodi del dominio possano guastarsi senza causare la perdita della disponibilità dei dati da parte del cluster. La funzione dei domini di protezione consente di monitorare la capacità delle risorse di un cluster per garantire che il cluster sia ancora in grado di riparare in caso di guasto. È possibile selezionare il monitoraggio a livello di nodo o di dominio dello chassis:
+
+* *Livello di nodo* definisce ciascun dominio di protezione per singolo nodo, con ogni nodo potenzialmente posizionato nello chassis.
+* *Livello di chassis* definisce ciascun dominio di protezione in base ai nodi che condividono uno chassis.
+
+
+Un dominio dello chassis richiede più risorse di capacità potenziale rispetto a un dominio del nodo per essere resiliente al guasto. Quando viene superata la soglia di un dominio di protezione, un cluster non dispone più di capacità sufficiente per risolvere i problemi, mantenendo al contempo la disponibilità dei dati senza interruzioni.
+
+
+
+== Trova ulteriori informazioni
+
+* https://docs.netapp.com/us-en/hci/index.html["Documentazione NetApp HCI"^]
+* https://www.netapp.com/data-storage/solidfire/documentation["Pagina SolidFire and Element Resources"^]
+

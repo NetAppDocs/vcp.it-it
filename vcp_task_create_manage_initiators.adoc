@@ -1,0 +1,166 @@
+---
+sidebar: sidebar 
+permalink: vcp_task_create_manage_initiators.html 
+summary: È possibile creare e gestire gli iniziatori utilizzando il plug-in. 
+keywords: netapp, storage, inititators, vcp, vcenter, element 
+---
+= Creare e gestire gli iniziatori
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Gli iniziatori consentono ai client esterni di accedere ai volumi di un cluster, fungendo da punto di ingresso per la comunicazione tra client e volumi.
+
+È possibile creare, modificare ed eliminare gli iniziatori e assegnare loro alias intuitivi per semplificare l'amministrazione e l'accesso ai volumi. Quando si aggiunge un iniziatore a un gruppo di accesso al volume, tale iniziatore consente l'accesso a tutti i volumi del gruppo.
+
+.Opzioni
+* <<Creare un iniziatore>>
+* <<Modificare un iniziatore>>
+* <<Aggiungere gli iniziatori a un gruppo di accesso>>
+* <<Eliminare un iniziatore>>
+
+
+
+
+== Creare un iniziatore
+
+È possibile creare iniziatori iSCSI o Fibre Channel e, facoltativamente, assegnarli alias.
+
+.Fasi
+. In vSphere Web Client, aprire la scheda *Gestione*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la sottoscheda *Initiators*.
+. Selezionare *Crea iniziatore*.
+. Per creare un singolo iniziatore:
++
+.. Selezionare *Crea un singolo iniziatore*.
+.. Immettere l'IQN o il WWPN dell'iniziatore nel campo *IQN/WWPN*.
++
+Il formato accettato di un IQN Initiator è `iqn.yyyy-mm` dove y e m sono cifre seguite da testo che deve contenere solo cifre, caratteri alfabetici minuscoli e un punto (`.`), due punti (`:`), o trattino (`-`). Un esempio del formato è il seguente:
+
++
+[listing]
+----
+iqn.2010-01.com.solidfire:c2r9.fc0.2100000e1e09bb8b
+----
++
+Il formato accettato di un iniziatore Fibre Channel WWPN è `:Aa:bB:CC:dd:11:22:33:44` oppure `AabBCCdd11223344`. Un esempio del formato è il seguente:
+
++
+[listing]
+----
+5f:47:ac:c0:5c:74:d4:02
+----
+.. Immettere un nome descrittivo per l'iniziatore nel campo *Alias*.
+
+
+. Per creare più iniziatori:
++
+.. Selezionare *Crea più iniziatori*.
+.. Effettuare una delle seguenti operazioni:
++
+*** Fare clic su *Scan hosts* (Esegui scansione host) per eseguire la scansione degli host vSphere alla ricerca di valori initiator non definiti nel cluster NetApp Element.
+*** Inserire un elenco di IQN o WWPN nella casella di testo e selezionare *Add initiator* (Aggiungi iniziatori).
+
+
+.. (Facoltativo) sotto l'intestazione *Alias*, selezionare il campo per ciascuna voce per aggiungere un alias.
+.. (Facoltativo) rimuovere un iniziatore dall'elenco, secondo necessità.
+
+
+. Fare clic su *OK* per creare l'iniziatore.
+
+
+
+
+== Modificare un iniziatore
+
+È possibile modificare l'alias di un iniziatore esistente o aggiungere un alias se non ne esiste già uno.
+
+.Fasi
+. In vSphere Web Client, aprire la scheda *Gestione*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la sottoscheda *Initiators*.
+. Selezionare la casella di controllo dell'iniziatore che si desidera modificare.
+. Selezionare *azioni*.
+. Nel menu visualizzato, selezionare *Edit* (Modifica).
+. Inserire un nuovo alias per l'iniziatore nel campo *Alias*.
+. Fare clic su *OK*.
+
+
+
+
+== Aggiungere gli iniziatori a un gruppo di accesso
+
+È possibile aggiungere iniziatori a un gruppo di accesso per consentire l'accesso ai volumi nel gruppo di accesso al volume senza richiedere l'autenticazione CHAP. Quando si aggiunge un iniziatore a un gruppo di accesso al volume, l'iniziatore ha accesso a tutti i volumi in quel gruppo di accesso al volume.
+
+.Fasi
+. In vSphere Web Client, aprire la scheda *Gestione*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la sottoscheda *Initiators*.
+. Selezionare le caselle di controllo degli iniziatori che si desidera aggiungere a un gruppo di accesso.
+. Selezionare *azioni*.
+. Nel menu visualizzato, selezionare *Aggiungi a gruppo di accesso*.
+. Nella finestra di dialogo *Aggiungi a gruppo di accesso*, scegliere un gruppo di accesso dall'elenco a discesa.
+. Fare clic su *OK*.
+
+
+
+
+== Eliminare un iniziatore
+
+È possibile eliminare un iniziatore una volta che non è più necessario. Quando si elimina un iniziatore, il sistema lo rimuove da qualsiasi gruppo di accesso al volume associato. Tutte le connessioni che utilizzano l'iniziatore rimangono valide fino al ripristino della connessione.
+
+.Fasi
+. In vSphere Web Client, aprire la scheda *Gestione*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la sottoscheda *Initiators*.
+. Selezionare la casella di controllo degli iniziatori che si desidera eliminare.
+. Selezionare *azioni*.
+. Nel menu visualizzato, selezionare *Delete* (Elimina).
+. Confermare l'azione.
+
+
+
+
+== Trova ulteriori informazioni
+
+* https://docs.netapp.com/us-en/hci/index.html["Documentazione NetApp HCI"^]
+* https://www.netapp.com/data-storage/solidfire/documentation["Pagina SolidFire and Element Resources"^]
+

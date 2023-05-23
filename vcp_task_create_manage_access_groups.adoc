@@ -1,0 +1,185 @@
+---
+sidebar: sidebar 
+permalink: vcp_task_create_manage_access_groups.html 
+summary: È possibile creare e gestire i gruppi di accesso ai volumi utilizzando il plug-in. 
+keywords: netapp, storage, access groups, vcp, vcenter, element 
+---
+= Creare e gestire i gruppi di accesso ai volumi
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+R link:https://docs.netapp.com/us-en/hci/docs/concept_hci_volume_access_groups.html["gruppo di accesso al volume"^] È un insieme di volumi a cui gli utenti possono accedere utilizzando gli iniziatori iSCSI o FC.
+
+È possibile creare gruppi di accesso mappando gli IQN degli iniziatori iSCSI o le WWPN FC in un insieme di volumi. Ogni IQN aggiunto a un gruppo di accesso può accedere a ciascun volume del gruppo senza richiedere l'autenticazione CHAP. Ogni WWPN aggiunto a un gruppo di accesso abilita l'accesso alla rete FC ai volumi del gruppo di accesso.
+
+.Opzioni
+* <<Creare un gruppo di accesso>>
+* <<Modificare un gruppo di accesso>>
+* <<Aggiungere volumi a un gruppo di accesso>>
+* <<Rimuovere i volumi da un gruppo di accesso>>
+* <<Eliminare un gruppo di accesso>>
+
+
+
+
+== Creare un gruppo di accesso
+
+È possibile creare gruppi di accesso ai volumi con uno o più iniziatori. Il mapping degli iniziatori client Fibre Channel (WWPN) o iSCSI (IQN) ai volumi di un gruppo di accesso al volume consente l'i/o sicuro dei dati tra una rete e un volume.
+
+.Fasi
+. In vSphere Web Client, aprire la scheda *Gestione*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la sottoscheda *gruppi di accesso*.
+. Selezionare *Crea gruppo di accesso*.
+. Immettere un nome per il gruppo di accesso al volume.
++
+
+TIP: Utilizzare le Best practice di denominazione descrittive. Ciò è particolarmente importante se nell'ambiente vengono utilizzati più cluster o server vCenter.
+
+. Selezionare un IQN o WWPN non assegnato dall'elenco a discesa *Select an Initiator* (Seleziona un iniziatore) e fare clic su *Add Initiator* (Aggiungi iniziatore).
++
+
+NOTE: Gli iniziatori possono essere aggiunti o cancellati dopo la creazione del gruppo di accesso al volume.
+
+. Fare clic su *OK* per creare il gruppo di accesso.
+
+
+
+
+== Modificare un gruppo di accesso
+
+È possibile modificare i nomi dei gruppi di accesso al volume o aggiungere o rimuovere gli iniziatori dal punto di estensione del plug-in.
+
+.Fasi
+. In vSphere Web Client, aprire la scheda *Gestione*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la sottoscheda *gruppi di accesso*.
+. Selezionare la casella di controllo relativa al gruppo di accesso al volume che si desidera modificare.
+. Selezionare *azioni*.
+. Nel menu visualizzato, selezionare *Edit* (Modifica).
+. Se necessario, modificare quanto segue:
++
+.. Modificare il nome del gruppo di accesso.
+.. Aggiungere o rimuovere gli iniziatori.
++
+
+NOTE: Se si sta rimuovendo un iniziatore, fare clic sull'icona del cestino per rimuoverlo. Quando si rimuove l'iniziatore, non sarà più in grado di accedere ai volumi di quel gruppo di accesso al volume. Il normale accesso dell'account al volume non viene interrotto.
+
+
+
+. Selezionare *OK*.
+
+
+
+
+== Aggiungere volumi a un gruppo di accesso
+
+È possibile aggiungere volumi a un gruppo di accesso al volume. Ciascun volume può appartenere a più di un gruppo di accesso al volume; è possibile visualizzare i gruppi a cui appartiene ciascun volume dalla vista volumi attivi.
+
+.Di cosa hai bisogno
+* È necessario aggiungere ed eseguire almeno un cluster.
+* Esiste almeno un gruppo di accesso.
+* Esiste almeno un volume attivo.
+
+
+.Fasi
+. In vSphere Web Client, aprire la scheda *Gestione*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la sottoschab *Volumes*.
+. Selezionare la casella di controllo per ciascun volume che si desidera aggiungere a un gruppo di accesso.
+. Selezionare *azioni*.
+. Selezionare *Aggiungi a gruppo di accesso*.
+. Confermare i dettagli e selezionare un gruppo di accesso al volume dall'elenco.
+. Selezionare *OK*.
+
+
+
+
+== Rimuovere i volumi da un gruppo di accesso
+
+È possibile rimuovere i volumi da un gruppo di accesso.
+
+Quando si rimuove un volume da un gruppo di accesso, il gruppo non ha più accesso a tale volume.
+
+
+IMPORTANT: La rimozione di un volume da un gruppo di accesso può interrompere l'accesso dell'host al volume.
+
+. In vSphere Web Client, aprire la scheda *Gestione*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la sottoschab *Volumes*.
+. Selezionare la casella di controllo per ciascun volume che si desidera rimuovere da un gruppo di accesso.
+. Selezionare *azioni*.
+. Selezionare *Remove from Access Group* (Rimuovi da gruppo di accesso).
+. Confermare i dettagli e selezionare il gruppo di accesso al volume che non si desidera più accedere a ciascun volume selezionato.
+. Selezionare *OK*.
+
+
+
+
+== Eliminare un gruppo di accesso
+
+È possibile eliminare i gruppi di accesso al volume utilizzando il punto di estensione del plug-in. Non è necessario eliminare gli ID iniziatore o disassociare i volumi dal gruppo di accesso al volume prima di eliminare il gruppo. Una volta eliminato il gruppo di accesso, l'accesso di gruppo ai volumi viene interrotto.
+
+.Fasi
+. In vSphere Web Client, aprire la scheda *Gestione*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > Gestione*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > Gestione*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la sottoscheda *gruppi di accesso*.
+. Selezionare la casella di controllo relativa al gruppo di accesso che si desidera eliminare.
+. Selezionare *azioni*.
+. Nel menu visualizzato, selezionare *Delete* (Elimina).
+. Confermare l'azione.
+
+
+
+
+== Trova ulteriori informazioni
+
+* https://docs.netapp.com/us-en/hci/index.html["Documentazione NetApp HCI"^]
+* https://www.netapp.com/data-storage/solidfire/documentation["Pagina SolidFire and Element Resources"^]
+

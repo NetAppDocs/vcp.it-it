@@ -1,0 +1,74 @@
+---
+sidebar: sidebar 
+permalink: vcp_concept_vvols.html 
+summary:  
+keywords: netapp, vvol, virtual volume, storage container, protocol endpoint, vcp, vcenter, element 
+---
+= Volumi virtuali (vVol)
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+VSphere Virtual Volumes è un paradigma di storage per VMware che sposta gran parte della gestione dello storage per vSphere dal sistema di storage a VMware vCenter. Con i volumi virtuali (vVol), è possibile allocare lo storage in base ai requisiti delle singole macchine virtuali.
+
+
+
+== Associazioni
+
+Il cluster NetApp Element sceglie un endpoint del protocollo ottimale, crea un binding che associa l'host ESXi e il volume virtuale all'endpoint del protocollo e restituisce il binding all'host ESXi. Una volta eseguito il bound, l'host ESXi può eseguire operazioni di i/o con il volume virtuale associato.
+
+
+
+== Endpoint del protocollo
+
+Gli host VMware ESXi utilizzano proxy i/o logici noti come endpoint del protocollo per comunicare con i volumi virtuali. Gli host ESXi collegano i volumi virtuali agli endpoint del protocollo per eseguire operazioni di i/O. Quando una macchina virtuale sull'host esegue un'operazione di i/o, l'endpoint del protocollo associato indirizza l'i/o al volume virtuale con cui è associato.
+
+Gli endpoint del protocollo in un cluster NetApp Element funzionano come unità logiche amministrative SCSI. Ogni endpoint del protocollo viene creato automaticamente dal cluster. Per ogni nodo di un cluster, viene creato un endpoint del protocollo corrispondente. Ad esempio, un cluster a quattro nodi avrà quattro endpoint di protocollo.
+
+ISCSI è l'unico protocollo supportato per il software NetApp Element. Il protocollo Fibre Channel non è supportato. Gli endpoint del protocollo non possono essere cancellati o modificati da un utente, non sono associati a un account e non possono essere aggiunti a un gruppo di accesso al volume. È possibile rivedere le informazioni sull'endpoint del protocollo utilizzando il punto di estensione del plug-in:
+
+* A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > VVol > endpoint del protocollo*.
+* Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > VVol > endpoint del protocollo*.
+
+
+
+
+== Container di storage
+
+I container di storage sono costrutti logici che vengono mappati agli account NetApp Element e utilizzati per la creazione di report e l'allocazione delle risorse. Raggruppano capacità di storage raw o capacità di storage aggregate che il sistema di storage può fornire ai volumi virtuali. Un datastore VVol creato in vSphere viene mappato a un singolo container di storage. Per impostazione predefinita, un singolo container di storage dispone di tutte le risorse disponibili dal cluster NetApp Element. Se è necessaria una governance più granulare per il multi-tenancy, è possibile creare più container di storage.
+
+I container di storage funzionano come gli account tradizionali e possono contenere volumi virtuali e volumi tradizionali. È supportato un massimo di quattro container di storage per cluster. Per utilizzare la funzionalità VVol, è necessario almeno un container di storage. È possibile creare, eliminare e visualizzare i dettagli relativi ai container di storage utilizzando il punto di estensione del plug-in:
+
+* A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > VVol > Container di storage*.
+* Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > VVol > container di storage*.
+
+
+Durante la creazione di VVol, è inoltre possibile rilevare i container di storage in vCenter.
+
+
+
+== Provider VASA
+
+Per rendere vSphere consapevole della funzionalità vVol sul cluster NetApp Element, l'amministratore di vSphere deve registrare il provider VASA NetApp Element con vCenter. Il provider VASA è il percorso di controllo out-of-band tra vSphere e il cluster di elementi. È responsabile dell'esecuzione delle richieste sul cluster Element per conto di vSphere, come la creazione di macchine virtuali, la messa a disposizione di vSphere delle macchine virtuali e la pubblicità delle funzionalità di storage su vSphere.
+
+Il provider VASA viene eseguito come parte del cluster master nel software Element. Il cluster master è un servizio altamente disponibile che esegue il failover su qualsiasi nodo del cluster in base alle necessità. In caso di failover del cluster master, il provider VASA si sposta con esso, garantendo un'elevata disponibilità per il provider VASA. Tutte le attività di provisioning e gestione dello storage utilizzano il provider VASA, che gestisce le modifiche necessarie al cluster di elementi.
+
+
+NOTE: Per il software Element 12.5 e versioni precedenti, non registrare più di un provider VASA NetApp Element in una singola istanza di vCenter. Quando viene aggiunto un secondo provider VASA NetApp Element, questo rende inaccessibili tutti i datastore VVOL.
+
+
+NOTE: Il supporto DI VASA per un massimo di 10 vCenter è disponibile come patch di aggiornamento se hai già registrato un provider VASA con vCenter. Per eseguire l'installazione, seguire le istruzioni nel manifest VASA39 e scaricare il file .tar.gz da link:https://mysupport.netapp.com/site/products/all/details/element-software/downloads-tab/download/62654/vasa39["Download di software NetApp"^] sito. Il provider VASA di NetApp Element utilizza un certificato NetApp. Con questa patch, il certificato viene utilizzato senza modifiche da vCenter per supportare più vCenter per l'utilizzo di VASA e VVol. Non modificare il certificato. I certificati SSL personalizzati non sono supportati da VASA.
+
+
+
+== Trova ulteriori informazioni
+
+* https://docs.netapp.com/us-en/hci/index.html["Documentazione NetApp HCI"^]
+* http://mysupport.netapp.com/hci/resources["Pagina delle risorse NetApp HCI"^]
+* https://www.netapp.com/data-storage/solidfire/documentation["Pagina SolidFire and Element Resources"^]
+

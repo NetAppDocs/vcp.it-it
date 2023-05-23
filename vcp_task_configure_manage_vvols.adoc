@@ -1,0 +1,324 @@
+---
+sidebar: sidebar 
+permalink: vcp_task_configure_manage_vvols.html 
+summary: È possibile configurare volumi virtuali per lo storage fornito nel cluster. 
+keywords: netapp, set up vvol, configure vvol, virtual volume, vcp, vcenter, element, vasa provider 
+---
+= Configurare e gestire i volumi virtuali
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+È possibile attivare VMware vSphere link:vcp_concept_vvols.html["Volumi virtuali (VVol)"] E configurare una configurazione di volumi virtuali su un cluster di storage NetApp Element. Element Plug-in per vCenter Server monitora le performance e offre opzioni per la gestione dei volumi virtuali, link:vcp_concept_vvols.html#storage-containers["container di storage"], link:vcp_concept_vvols.html#protocol-endpoints["endpoint del protocollo"]e dal punto di estensione del plug-in.
+
+.Di cosa hai bisogno
+* Si utilizza un cluster NetApp Element 10 o versione successiva connesso a un ambiente ESXi 6.5 o versione successiva con compatibilità VVol.
+* Si utilizza vCenter 6.5 o versione successiva.
+
+
+
+
+== Attività di installazione
+
+Per utilizzare i volumi virtuali (VVol) nel plug-in NetApp Element per vCenter Server, è necessario eseguire le fasi iniziali di configurazione.
+
+.Fasi
+. <<Abilitare la funzionalità dei volumi virtuali sul cluster NetApp Element>>
+. <<Registrare il provider VASA con vCenter>>
+. <<Creare un contenitore di storage e un datastore VVol associato>>
+
+
+
+
+== Attività di gestione
+
+* <<Monitorare le risorse dei volumi virtuali>>
+* <<Creare un datastore VVol per un container di storage>>
+* <<Eliminare un contenitore di storage>>
+
+
+
+
+== Abilitare la funzionalità dei volumi virtuali sul cluster NetApp Element
+
+È necessario attivare manualmente la funzionalità vVol (vSphere Virtual Volumes) utilizzando il plug-in extension point. Il sistema Element viene fornito con la funzionalità VVol disattivata per impostazione predefinita e non viene attivata automaticamente durante una nuova installazione o un aggiornamento. L'attivazione della funzione VVol è un'attività di configurazione unica.
+
+.Fasi
+. Nel client Web vSphere, aprire la scheda *Clusters*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Configurazione > Clusters*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Configurazione NetApp Element > Clusters*.
+
+
+. Selezionare un cluster dall'elenco che si desidera attivare.
+. Selezionare *azioni*.
+. Nel menu visualizzato, selezionare *Enable VVol* (attiva VVol*).
++
+
+IMPORTANT: Una volta attivata, la funzionalità VVol non può essere disattivata. L'attivazione della funzionalità vSphere Virtual Volumes modifica in modo permanente la configurazione del software NetApp Element. La funzionalità VVol deve essere attivata solo se il cluster è connesso a un ambiente compatibile con VMware ESXi VVols. È possibile disattivare la funzione VVol e ripristinare le impostazioni predefinite solo ripristinando l'immagine predefinita del cluster.
+
+. Selezionare *Sì* per confermare la modifica della configurazione dei volumi virtuali.
++
+
+NOTE: Quando la funzionalità VVol è attivata, il cluster di elementi avvia il provider VASA, apre la porta 8444 per il traffico VASA e crea endpoint di protocollo che possono essere rilevati da vCenter e da tutti gli host ESXi.
+
+. Selezionare *azioni* per il cluster selezionato.
+. Nel menu visualizzato, selezionare *Dettagli*.
+. Copiare l'URL del provider VASA dal campo *VASA Provider URL*. Questo URL verrà utilizzato per registrare il provider VASA in vCenter.
+. Vedere <<Registrare il provider VASA con vCenter>> per i passi successivi.
+
+
+
+
+== Registrare il provider VASA con vCenter
+
+È necessario registrare il provider VASA NetApp Element con vCenter in modo che vCenter sia consapevole della funzionalità di VVol nel cluster. La registrazione del provider VASA con vCenter è un'attività di configurazione unica.
+
+.Di cosa hai bisogno
+* La funzionalità VVol è stata attivata per il cluster.
+
+
+.A proposito di questa attività
+Questa procedura descrive i passaggi disponibili nella versione 6.7 di vSphere. L'interfaccia utente di vSphere potrebbe differire leggermente da quanto descritto a seconda della versione di vSphere installata. Per ulteriore assistenza, consultare la documentazione di VMware vCenter.
+
+
+IMPORTANT: Non registrare un provider VASA NetApp Element in più istanze di vCenter. Il provider VASA di NetApp Element può essere registrato solo su un singolo vCenter a causa di limitazioni relative alla gestione di SSL da parte di vCenter. Un singolo vCenter può avere più cluster NetApp Element, ma un cluster non può essere condiviso tra due istanze di vCenter.
+
+
+IMPORTANT: Per il software Element 12.5 e versioni precedenti, non registrare più di un provider VASA NetApp Element in una singola istanza di vCenter. Quando viene aggiunto un secondo provider VASA NetApp Element, questo rende inaccessibili tutti i datastore VVOL.
+
+
+NOTE: Il supporto DI VASA per un massimo di 10 vCenter è disponibile come patch di aggiornamento se hai già registrato un provider VASA con vCenter. Per eseguire l'installazione, seguire le istruzioni nel manifest VASA39 e scaricare il file .tar.gz da link:https://mysupport.netapp.com/site/products/all/details/element-software/downloads-tab/download/62654/vasa39["Download di software NetApp"] sito. Il provider VASA di NetApp Element utilizza un certificato NetApp. Con questa patch, il certificato viene utilizzato senza modifiche da vCenter per supportare più vCenter per l'utilizzo di VASA e VVol. Non modificare il certificato. I certificati SSL personalizzati non sono supportati da VASA.
+
+.Fasi
+. Da vSphere Client Home, selezionare *host e cluster*.
+. Selezionare un'istanza di vCenter su cui registrare il provider VASA NetApp Element.
+. Selezionare *Configura > Storage Providers*.
+. Da *Storage Providers*, selezionare l'icona ADD (Aggiungi).
+. Inserire le seguenti informazioni nella finestra di dialogo *nuovo provider di storage*:
++
+** Nome del provider VASA.
+** URL del provider VASA.
++
+
+NOTE: L'URL del provider VASA viene fornito quando si attiva VVol nel plug-in vCenter. È inoltre possibile trovare l'URL dai dettagli del cluster (*Configurazione NetApp Element > Clusters* o *Plugin remoto NetApp Element > Configurazione > Clusters*) o dalle impostazioni del cluster nell'interfaccia utente di Element (`https://<MVIP>/cluster`).
+
+** Nome utente dell'account amministrativo per il cluster NetApp Element.
+** Password dell'account amministrativo per il cluster NetApp Element.
+
+
+. Selezionare *OK* per aggiungere il provider VASA.
+. Approvare la stampa personale del certificato SSL quando richiesto. Il provider VASA NetApp Element deve ora essere registrato con lo stato di `Connected`.
++
+
+NOTE: Aggiornare il provider di storage, se necessario, per visualizzare lo stato corrente del provider dopo la prima registrazione. È inoltre possibile verificare che il provider sia abilitato in *Configurazione NetApp Element > Clusters* o *Plugin remoto NetApp Element > Configurazione > Clusters*. Selezionare *azioni* per il cluster che si sta abilitando e selezionare *Dettagli*.
+
+. Vedere <<Creare un contenitore di storage e un datastore VVol associato>> per i passi successivi.
+
+
+
+
+== Creare un contenitore di storage e un datastore VVol associato
+
+È possibile creare contenitori di storage dalla scheda VVol nel punto di estensione del plug-in. È necessario creare almeno un container di storage per iniziare il provisioning delle macchine virtuali con supporto Vol.
+
+.Prima di iniziare
+* La funzionalità VVol è stata attivata per il cluster.
+* Hai registrato il provider VASA NetApp Element per i volumi virtuali con vCenter.
+
+
+.Fasi
+. In vSphere Web Client, aprire la scheda *VVols*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > VVol*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > VVol*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la sottoscheda *Storage Containers*.
+. Selezionare *Crea contenitore di storage*.
+. Inserire le informazioni sul contenitore di storage nella finestra di dialogo *Crea un nuovo contenitore di storage*:
++
+.. Immettere un nome per il contenitore di storage.
++
+
+TIP: Utilizzare le Best practice di denominazione descrittive. Ciò è particolarmente importante se nell'ambiente vengono utilizzati più cluster o server vCenter.
+
+.. Configurare i segreti di initiator e target per CHAP.
++
+
+TIP: Lasciare vuoti i campi CHAP Settings (Impostazioni CHAP) per generare automaticamente i segreti.
+
+.. Immettere un nome per l'archivio dati. La casella di controllo *Crea un archivio dati* è selezionata per impostazione predefinita.
++
+
+NOTE: Per utilizzare il container di storage in vSphere è necessario un datastore VVol.
+
+.. Selezionare uno o più host per l'archivio dati.
++
+
+NOTE: Se si utilizza vCenter Linked Mode, solo gli host disponibili per il server vCenter a cui è assegnato il cluster sono disponibili per la selezione.
+
+.. Selezionare *OK*.
+
+
+. Verificare che il nuovo contenitore di storage venga visualizzato nell'elenco nella sottoscheda *Storage Containers*. Poiché un ID account NetApp Element viene creato automaticamente e assegnato al container di storage, non è necessario creare manualmente un account.
+. Verificare che l'archivio dati associato sia stato creato anche sull'host selezionato in vCenter.
+
+
+
+
+== Monitorare le risorse dei volumi virtuali
+
+È possibile rivedere le performance e le impostazioni dei componenti del volume virtuale dal punto di estensione del plug-in:
+
+* <<Monitoraggio di VVol>>
+* <<Monitoraggio dei container di storage>>
+* <<Endpoint del protocollo di monitoraggio>>
+
+
+
+
+=== Monitoraggio di VVol
+
+È possibile esaminare i dati generali di tutti i volumi virtuali attivi nel cluster o i dati dettagliati di ciascun volume virtuale. Il plug-in tiene traccia dell'efficienza, delle performance, degli eventi e della QoS dei volumi virtuali, nonché di snapshot, macchine virtuali e associazioni associati.
+
+.Di cosa hai bisogno
+* Hai attivato le macchine virtuali, in modo che i dettagli dei volumi virtuali siano disponibili per la visualizzazione.
+
+
+.Fasi
+. In vSphere Web Client, aprire la scheda *VVols*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > VVol*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > VVol*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Dalla scheda *volumi virtuali*, è possibile cercare un volume virtuale specifico.
+. Selezionare la casella di controllo relativa al volume virtuale che si desidera esaminare.
+. Selezionare *azioni*.
+. Nel menu visualizzato, selezionare *Dettagli*.
+
+
+
+
+=== Monitoraggio dei container di storage
+
+È possibile esaminare i dati generali di tutti i container di storage attivi nel cluster o i dati dettagliati di ciascun container di storage. Il plug-in tiene traccia dell'efficienza dei container di storage, delle performance e dei volumi virtuali associati.
+
+.Fasi
+. In vSphere Web Client, aprire la scheda *VVols*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > VVol*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > VVol*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la scheda *Storage Containers*.
+. Selezionare la casella di controllo relativa al contenitore di storage che si desidera esaminare.
+. Selezionare *azioni*.
+. Nel menu visualizzato, selezionare *Dettagli*.
+
+
+
+
+=== Endpoint del protocollo di monitoraggio
+
+È possibile rivedere i dati generali per tutti gli endpoint del protocollo sul cluster.
+
+.Fasi
+. In vSphere Web Client, aprire la scheda *VVols*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > VVol*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > VVol*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la scheda *Protocol Endpoint* (endpoint del protocollo).
+. Selezionare la casella di controllo per l'endpoint del protocollo che si desidera esaminare.
+. Selezionare *azioni*.
+. Nel menu visualizzato, selezionare *Dettagli*.
+
+
+
+
+== Creare un datastore VVol per un container di storage
+
+Dopo aver creato un container di storage, è necessario creare anche un datastore di volumi virtuali che rappresenti il container di storage nel cluster NetApp Element in vCenter. Questa procedura può essere utilizzata come alternativa alla creazione di un datastore da <<Creare un contenitore di storage e un datastore VVol associato,Creare un container di storage>> wizard. È necessario creare almeno un datastore VVol per iniziare il provisioning delle macchine virtuali supportate da VVol.
+
+.Di cosa hai bisogno
+* Un container di storage esistente nell'ambiente virtuale.
++
+
+NOTE: Potrebbe essere necessario eseguire una nuova scansione dello storage NetApp Element in vCenter per rilevare i container di storage.
+
+
+
+.Fasi
+. Dalla vista Navigator in vCenter, fare clic con il pulsante destro del mouse su un cluster di storage e selezionare *Storage > Datastore > New Datastore*.
+. Nella finestra di dialogo *nuovo archivio dati*, selezionare *Vol* come tipo di archivio dati da creare.
+. Inserire un nome per l'archivio dati nel campo *Nome archivio dati*.
+. Selezionare il contenitore di storage NetApp Element dall'elenco contenitore di storage di backup.
++
+
+NOTE: Non è necessario creare manualmente LUN endpoint del protocollo (PE). Vengono automaticamente mappati agli host ESXi quando viene creato il datastore.
+
+. Selezionare gli host che richiedono l'accesso all'archivio dati.
+. Selezionare *Avanti*.
+. Esaminare le configurazioni e selezionare *fine* per creare il datastore Vol.
+
+
+
+
+== Eliminare un contenitore di storage
+
+È possibile eliminare i contenitori di storage dal punto di estensione del plug-in.
+
+.Di cosa hai bisogno
+* Tutti i volumi sono stati rimossi dal container di storage.
+
+
+.Fasi
+. In vSphere Web Client, aprire la scheda *VVols*:
++
+** A partire dal plug-in Element vCenter 5.0, selezionare *plug-in remoto NetApp Element > Gestione > VVol*.
+** Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare *Gestione NetApp Element > VVol*.
+
+
++
+
+NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si intende utilizzare per l'attività sia selezionato nella barra di navigazione.
+
+. Selezionare la scheda *Storage Containers*.
+. Selezionare la casella di controllo relativa al contenitore di storage che si desidera eliminare.
+. Selezionare *azioni*.
+. Nel menu visualizzato, selezionare *Delete* (Elimina).
+. Confermare l'azione.
+. Aggiornare l'elenco dei contenitori di storage nella sottoscheda *Storage Containers* per confermare che il contenitore di storage è stato rimosso.
+
+
+
+
+== Trova ulteriori informazioni
+
+* https://docs.netapp.com/us-en/hci/index.html["Documentazione NetApp HCI"^]
+* https://www.netapp.com/data-storage/solidfire/documentation["Pagina SolidFire and Element Resources"^]
+
