@@ -11,7 +11,6 @@
   <block id="87e51067c2a7529e01c8fa57d7d29919" category="paragraph">Per utilizzare il plug-in Element vCenter, è necessario VMware vSphere 8.0 e 7.0, inclusi vCenter ed ESXi con software iSCSI Adapter e iSCSI networking configurato.</block>
   <block id="3903fd261f224ad8af888f893eb71a5e" category="paragraph-title">Versioni di VMware vSphere supportate dal plug-in</block>
   <block id="39bb4a890cda10e989012ed844843a1a" category="paragraph">Il plug-in supporta le seguenti versioni principali del software VMware:</block>
-  <block id="a293a3d51c53fc838afbc761865ddaa8" category="list-text">VSphere 8.0, inclusi gli archivi dati vCenter Server, ESXi e VMFS5 e VMFS6</block>
   <block id="9cf493ed2f9140046fab3919844fdd27" category="list-text">VSphere 7.0 e 7.0 Update 1, 2 e 3, inclusi datastore vCenter Server, ESXi e VMFS5 e VMFS6</block>
   <block id="92a2b5cb9c6906035c2864fa225e1940" category="inline-link">articolo</block>
   <block id="1400ae8c17045a12d78fd12af11a1d4c" category="admonition">VMware vSphere 6.5 e 6.7 hanno raggiunto il termine del supporto il 15 ottobre 2022. A partire da Element Plug-in 5.0, vSphere 6.5 e 6.7 non sono più supportati. Per ulteriori informazioni, consulta questa sezione<block ref="6a2f70d2ba0033763d7682575dc0f9df" category="inline-link-rx"></block>.</block>
@@ -475,9 +474,7 @@
   <block id="ec5cec4b743ea330d62a06f9ea96bf90" category="paragraph">È possibile cancellare i dettagli di configurazione QoSSIOC per il nodo di gestione dello storage degli elementi (mNode). Prima di configurare le credenziali per un nuovo nodo di gestione o di modificare la password del servizio QoSSIOC, è necessario cancellare le impostazioni per il nodo di gestione configurato. La cancellazione delle impostazioni QoSSIOC rimuove il QoSSIOC attivo da vCenter, cluster e datastore.</block>
   <block id="177259bf399e56131535817a5b3d056c" category="summary">La documentazione è disponibile per le release precedenti alla versione 4.6 del plug-in NetApp Element per VMware vCenter Server.</block>
   <block id="51e42727247460a0bec3c65c38a8231b" category="doc">Versioni precedenti del plug-in NetApp Element per la documentazione di VMware vCenter Server</block>
-  <block id="892ff8e8ba8a88084fa51c3657a81ab8" category="paragraph">La documentazione è disponibile anche per le release precedenti alla versione 5.1 del plug-in NetApp Element per VMware vCenter Server.</block>
   <block id="b1859080f20e43589e23a4f60292cbd0" category="inline-link-macro">link alla documentazione</block>
-  <block id="5fd41756fdaa6f29377e51f411e6ef7b" category="admonition">Questo <block ref="f85d5f4f47d1b49f55d365d260fa53d2" category="inline-link-macro-rx"></block> Per il plug-in Element vCenter 5.1 sono incluse anche le versioni 4.6, 4.7, 4.8, 4.9, 4.10, e 5.0.</block>
   <block id="34b6cd75171affba6957e308dcbd92be" category="cell">Versione</block>
   <block id="8c4acbc2063657214fc1de03ee31a0df" category="cell">Note sulla versione del plug-in</block>
   <block id="fefb29e781716d4ae47b68c416f147bf" category="cell">Note sulla versione dei servizi di gestione</block>
@@ -1149,7 +1146,6 @@
   <block id="4eed15839b8c708f78b2b696364ff0aa" category="list-text"><block ref="4eed15839b8c708f78b2b696364ff0aa" category="inline-link-rx"></block></block>
   <block id="3938cfdbe176bad61cedb25bdb572858" category="section-title">Software NetApp Element</block>
   <block id="1dea56720635d200a6c7b3a71efca6ab" category="inline-link">Note sulla versione del software NetApp Element 12.7</block>
-  <block id="3e51721b09445e45502532be5e6096fc" category="list-text"><block ref="939f531b35412529043c2c302552fa24" category="inline-link-rx"></block> _NUOVO_</block>
   <block id="875455659aea2dfd3f63e40de150b31c" category="inline-link">Note sulla versione del software NetApp Element 12.5</block>
   <block id="6a881248d046a90f573e41d5ebe1362e" category="list-text"><block ref="6a881248d046a90f573e41d5ebe1362e" category="inline-link-rx"></block></block>
   <block id="56570048e2475ec7b64ee91388743714" category="inline-link">Note sulla versione del software NetApp Element 12.3.2</block>
@@ -1175,7 +1171,6 @@
   <block id="710e1f328ffefdd8944003db8a5e3dca" category="list-text"><block ref="710e1f328ffefdd8944003db8a5e3dca" category="inline-link-rx"></block></block>
   <block id="1de1fa776d5e13c615b89966caf040ca" category="section-title">Plug-in NetApp Element per VMware vCenter Server</block>
   <block id="54db42757b5d75d2f660dc70f35850cf" category="inline-link">Note sulla versione di vCenter Plug-in 5.1</block>
-  <block id="61ad36f15eb6ab7927cdc50f6e089a98" category="list-text"><block ref="410ecb079e286058eeb2bc6b56d9379c" category="inline-link-rx"></block> _NUOVO_</block>
   <block id="6b777567daa827d5b0665b94c630539f" category="inline-link">Note sulla versione di vCenter Plug-in 5.0</block>
   <block id="0e051271241f0648ba45a8ad135d030c" category="list-text"><block ref="0e051271241f0648ba45a8ad135d030c" category="inline-link-rx"></block></block>
   <block id="90e7c2277ee69a3d3ecf30fa1fe61ab1" category="inline-link">Note sulla versione di vCenter Plug-in 4.10</block>
@@ -2193,7 +2188,6 @@
   <block id="912fb2a41bedc2b62ad40bbc3d8ed20c" category="paragraph">È possibile eliminare un iniziatore una volta che non è più necessario. Quando si elimina un iniziatore, il sistema lo rimuove da qualsiasi gruppo di accesso al volume associato. Tutte le connessioni che utilizzano l'iniziatore rimangono valide fino al ripristino della connessione.</block>
   <block id="109cfbbb94809f819e848badd64ea15c" category="list-text">Selezionare la casella di controllo degli iniziatori che si desidera eliminare.</block>
   <block id="8fbfd26ed5e6497365d351c8f25fa303" category="doc">Aggiornare il plug-in</block>
-  <block id="b66c8a9d68bd0aeaa399e0f8ae04a674" category="paragraph">È possibile aggiornare il plug-in NetApp Element per vCenter Server seguendo la procedura descritta per l'installazione. Il plug-in NetApp Element vCenter 5.1 è disponibile al di fuori delle release Element e NetApp HCI come parte di un bundle di servizi di gestione.</block>
   <block id="9a4f689e4a76aad8186d3bc65ad401fb" category="list-text">A partire da Element Plug-in per vCenter 5.0, sono supportati solo VMware vSphere 8.0 e 7.0.</block>
   <block id="9fbd9fb1c98fdc3b7aeb8cf30510365b" category="list-text">Quando si esegue l'aggiornamento da Element Plug-in per vCenter 4.x a 5.x, i cluster già configurati con il plug-in vengono persi perché i dati non possono essere copiati da un'istanza di vCenter a un plug-in remoto. È necessario aggiungere nuovamente i cluster al plug-in remoto. Si tratta di un'attività una tantum durante l'aggiornamento da un plug-in locale a un plug-in remoto.</block>
   <block id="230c0803a12f9d38853bdccc853eaabd" category="paragraph">Per aggiornare il plug-in, seguire le istruzioni nella documentazione di aggiornamento del prodotto:</block>
@@ -2801,7 +2795,6 @@
   <block id="be11c74c1dd7f307bb80183a90dc2067" category="sidebar">Inizia subito</block>
   <block id="4b983fff716674f120176e09551dd445" category="sidebar">Panoramica del prodotto</block>
   <block id="5aa6ea991a62f7c634596fc6b1987052" category="sidebar">Installare e implementare il plug-in</block>
-  <block id="2f1a3e62508d88ddc31f1aa72a8334d4" category="sidebar">Scopri</block>
   <block id="33871b6190a8d5adbe8b15282054766c" category="sidebar">Novità</block>
   <block id="7d0ee6fed10d3d4e5c9ee496729ab519" category="sidebar">Note di rilascio</block>
   <block id="09a3438150481f613a24e724fafccaaa" category="sidebar">Sistemi storage all-flash SolidFire</block>
@@ -2824,4 +2817,32 @@
   <block id="dd38f906b37d412de7d1c1dcf4cbf31c" category="paragraph"><block ref="dd38f906b37d412de7d1c1dcf4cbf31c" category="inline-link-macro-rx"></block></block>
   <block id="8acb58cbd50ef1b468a020ee0bd351d3" category="inline-link-macro"><block ref="8acb58cbd50ef1b468a020ee0bd351d3" category="inline-link-rx"></block></block>
   <block id="2352c4e1f4d0024ade0869e00e6243f4" category="paragraph"><block ref="2352c4e1f4d0024ade0869e00e6243f4" category="inline-link-macro-rx"></block></block>
+  <block id="c383a818c3a85c8ddf42d50823c74c87" category="list-text">*Integrità dominio protezione personalizzata*: Visualizza lo stato di integrità del dominio protezione personalizzato per il cluster quando un dominio protezione personalizzato è configurato sul cluster.</block>
+  <block id="e8337edeb04bc8a7d5079c3ae42aca9e" category="paragraph">I seguenti dati indicano la protezione disponibile contro gli errori di uno dei domini di protezione personalizzati per il cluster.</block>
+  <block id="1b15621f73b7acf776f4bab322f48c37" category="list-text">*Livello di protezione*: Indica lo stato generale del livello di protezione.</block>
+  <block id="e953d3ede945712963b8633a34a16147" category="list-text">*Capacità blocco*: Indica lo stato attuale del livello di protezione del sottosistema servizi blocco.</block>
+  <block id="0903e7a25b6fe3c4c1c292bfb50b6305" category="paragraph">Indica inoltre la soglia di capacità totale alla quale si perde la resilienza.</block>
+  <block id="3def03a8540a1fa0cd5fddb64be14a52" category="list-text">*Capacità metadati*: Indica lo stato attuale del livello di protezione del sottosistema dei servizi metadati.</block>
+  <block id="9055d5b4f435ab7f0fd544794b6cd19f" category="list-text">*Nodi Ensemble*: Indica lo stato attuale del livello di protezione del sottosistema membri ensemble.</block>
+  <block id="939f531b35412529043c2c302552fa24" category="list-text"><block ref="939f531b35412529043c2c302552fa24" category="inline-link-rx"></block></block>
+  <block id="ce397f79b5032c3e327db3efe5a6048a" category="inline-link">VCenter Plug-in 5,2 - Note sulla versione</block>
+  <block id="4718467fa890cd0dcf159b3d461cedbe" category="list-text"><block ref="6bd87cf3d55c2ead3ab585e965bea4db" category="inline-link-rx"></block> _NUOVO_</block>
+  <block id="0d8e7da83905e55b509122516259e079" category="paragraph">È possibile aggiornare il plug-in NetApp Element per vCenter Server seguendo la procedura descritta per l'installazione. Il plug-in NetApp Element vCenter 5,2 è disponibile al di fuori delle release di Element e NetApp HCI nell'ambito di un bundle di servizi di gestione.</block>
+  <block id="6bd87cf3d55c2ead3ab585e965bea4db" category="list-text"><block ref="6bd87cf3d55c2ead3ab585e965bea4db" category="inline-link-rx"></block></block>
+  <block id="ce4da9d1400f05b36779b0eb51082347" category="inline-link">Ulteriori informazioni sui domini di protezione personalizzati</block>
+  <block id="c671ce05a947b4fc3538276dc92df5bc" category="paragraph"><block ref="94416f01b8f87d5b898c4987d363cee6" category="inline-link-rx"></block>.</block>
+  <block id="93fa53865774995b6cd95dfc1939095f" category="list-text">VSphere 8,0 Update 1 con vCenter Server, ESXi e datastore VMFS5 e VMFS6</block>
+  <block id="faf6c38631911f7840c3498b4ec9f746" category="inline-link-macro">Avviso per i servizi di gestione 2.24.40 (plug-in NetApp Element per VMware vCenter Server 5,2.12)</block>
+  <block id="25ca5b0e8a707ce2e66aeb1f6f90e710" category="list-text"><block ref="25ca5b0e8a707ce2e66aeb1f6f90e710" category="inline-link-macro-rx"></block></block>
+  <block id="fb7ee1da3ef0eafb228b5df1bc76e51a" category="paragraph">La documentazione è disponibile anche per le versioni precedenti alla versione 5,2 del plug-in NetApp Element per VMware vCenter Server.</block>
+  <block id="514f715e57edd4343e805d5f5384b20e" category="admonition">Questo <block ref="f85d5f4f47d1b49f55d365d260fa53d2" category="inline-link-macro-rx"></block> Per Element vCenter, il plug-in 5,2 include anche le versioni 5,1, 5,0, 4,10, 4,9, 4,8, 4,7 e 4,6.</block>
+  <block id="43ff194f410f3e93a8680bef5ba51e50" category="cell">5,1</block>
+  <block id="8ef365dbc309c214b67cabb8e4667395" category="cell"><block ref="8ef365dbc309c214b67cabb8e4667395" category="inline-link-rx"></block></block>
+  <block id="f8d3d7b8669323aed37a5ab85af833f2" category="inline-link">2.23.64</block>
+  <block id="6770db097fe40e46c77f186c92635e8d" category="cell"><block ref="6770db097fe40e46c77f186c92635e8d" category="inline-link-rx"></block></block>
+  <block id="5c6a9de58feba2a173cb8abb3af2ec85" category="paragraph">Il plug-in NetApp Element per vCenter Server 5,2 contiene miglioramenti alla supportabilità e alla visualizzazione dei domini di protezione personalizzati.</block>
+  <block id="c43b3da83b1c4add892ede9398b1570e" category="paragraph">Con la versione 5,2, il plug-in visualizza le informazioni sull'integrità del dominio di protezione personalizzato quando un dominio di protezione personalizzato è configurato su un cluster di software Element. <block ref="a4fc86d509d3502936ee9fca7d20341d" category="inline-link-macro-rx"></block>.</block>
+  <block id="cc3e6fea6638b2b1b2791804af52ec8c" category="paragraph">Il plug-in Element vCenter 5,2 è disponibile con la release 2.24.40 dei servizi di gestione.</block>
+  <block id="910e8449099d39f06d7f2cd8d6feea1c" category="section-title">Plug-in NetApp Element per vCenter Server 5,1</block>
+  <block id="6b51db420393cbff0d9f09dfeb229ecb" category="sidebar">Novità di NetApp HCI</block>
 </blocks>

@@ -129,16 +129,14 @@ homepage:
   tiles:
   - title: Inizia subito
     links:
+    - title: Note di rilascio
+      url: "/rn_relatedrn_vcp.html"
+    - title: Novità
+      url: "/rn_whatsnew_vcp.html"
     - title: Panoramica del prodotto
       url: "/concept_vcp_product_overview.html"
     - title: Installare e implementare il plug-in
-      url: "/vcp_task_getstarted.html"
-  - title: Scopri
-    links:
-    - title: Novità
-      url: "/rn_whatsnew_vcp.html"
-    - title: Note di rilascio
-      url: "/rn_relatedrn_vcp.html"
+      url: "/vcp_task_getstarted_5_0.html"
   - title: Sistemi storage all-flash SolidFire
     links:
     - title: Novità del software NetApp Element
@@ -149,6 +147,8 @@ homepage:
       url: https://docs.netapp.com/us-en/element-software/upgrade/task_sf_upgrade_all_vsphere.html
   - title: Sistemi NetApp HCI
     links:
+    - title: Novità di NetApp HCI
+      url: https://docs.netapp.com/us-en/hci/docs/rn_whatsnew.html
     - title: Aggiornare il plug-in Element
       url: https://docs.netapp.com/us-en/hci/docs/task_vcp_upgrade_plugin.html
     - title: Aggiorna i componenti vSphere

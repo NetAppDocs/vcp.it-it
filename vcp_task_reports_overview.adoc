@@ -61,6 +61,20 @@ NOTE: La funzionalità dei domini di protezione non è compatibile con i cluster
 ** *Metadata Capacity*: Indica se la capacità dei metadati è sufficiente per risolvere il problema, mantenendo al contempo la disponibilità dei dati senza interruzioni. Normale (verde) indica che il cluster dispone di metadati sufficienti per mantenere il livello di monitoraggio selezionato. Full (pieno) (rosso) indica che il cluster non è più in grado di supportare il livello di monitoraggio selezionato ed è necessaria un'azione correttiva.
 
 
+* *Integrità dominio protezione personalizzata*: Visualizza lo stato di integrità del dominio protezione personalizzato per il cluster quando un dominio protezione personalizzato è configurato sul cluster.
++
+I seguenti dati indicano la protezione disponibile contro gli errori di uno dei domini di protezione personalizzati per il cluster.
+
++
+** *Livello di protezione*: Indica lo stato generale del livello di protezione.
+** *Capacità blocco*: Indica lo stato attuale del livello di protezione del sottosistema servizi blocco.
++
+Indica inoltre la soglia di capacità totale alla quale si perde la resilienza.
+
+** *Capacità metadati*: Indica lo stato attuale del livello di protezione del sottosistema dei servizi metadati.
+** *Nodi Ensemble*: Indica lo stato attuale del livello di protezione del sottosistema membri ensemble.
+
+
 * *IOPS con provisioning*: Un riepilogo delle modalità di overprovisioning degli IOPS del volume nel cluster. I calcoli degli IOPS forniti sono determinati dalla somma degli IOPS minimi totali, degli IOPS massimi e degli IOPS burst per tutti i volumi del cluster, divisi per gli IOPS massimi valutati per il cluster.
 +
 
