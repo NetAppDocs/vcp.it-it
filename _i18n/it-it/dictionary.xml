@@ -2845,4 +2845,5 @@
   <block id="cc3e6fea6638b2b1b2791804af52ec8c" category="paragraph">Il plug-in Element vCenter 5,2 è disponibile con la release 2.24.40 dei servizi di gestione.</block>
   <block id="910e8449099d39f06d7f2cd8d6feea1c" category="section-title">Plug-in NetApp Element per vCenter Server 5,1</block>
   <block id="6b51db420393cbff0d9f09dfeb229ecb" category="sidebar">Novità di NetApp HCI</block>
+  <block id="bf2765efb2720c4592beeec5c6bf386c" category="sidebar">Il plug-in NetApp Element per VMware vCenter Server mette a disposizione un plug-in per l'interfaccia di VMware vSphere che ti permette di gestire e monitorare i cluster di storage con software NetApp Element. È possibile utilizzare questo sito di documentazione per saperne di più e utilizzare il plug-in. Questo sito della documentazione riguarda il plug-in di elementi remoto per vCenter 5,0 e versioni successive e il plug-in di elementi locale per vCenter 4,6 e 4,10.</block>
 </blocks>
