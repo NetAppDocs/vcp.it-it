@@ -14,7 +14,7 @@ keywords: netapp, vcp, vcenter, plugin, element, upgrade
 
 
 [role="lead"]
-È possibile aggiornare il plug-in NetApp Element per vCenter Server seguendo la procedura descritta per l'installazione. Il plug-in NetApp Element vCenter 5,2 è disponibile al di fuori delle release di Element e NetApp HCI nell'ambito di un bundle di servizi di gestione.
+È possibile aggiornare il plug-in NetApp Element per vCenter Server seguendo la procedura descritta per l'installazione. Il plug-in NetApp Element vCenter 5,3 è disponibile al di fuori delle release di Element e NetApp HCI nell'ambito di un bundle di servizi di gestione.
 
 [NOTE]
 ====
@@ -34,7 +34,7 @@ Per aggiornare il plug-in, seguire le istruzioni nella documentazione di aggiorn
 
 == Trova ulteriori informazioni
 
-* https://library.netapp.com/ecm/ecm_download_file/ECMLP2886272["VCenter Plug-in 5,2 - Note sulla versione"^]
+* https://library.netapp.com/ecm/ecm_download_file/ECMLP3316480["VCenter Plug-in 5,3 - Note sulla versione"^]
 * https://kb.netapp.com/Advice_and_Troubleshooting/Data_Storage_Software/Management_services_for_Element_Software_and_NetApp_HCI/Management_Services_Release_Notes["Note sulla versione di Hybrid Cloud Control and Management Services"^]
 * https://docs.netapp.com/us-en/hci/index.html["Documentazione NetApp HCI"^]
 * http://mysupport.netapp.com/hci/resources["Pagina delle risorse NetApp HCI"^]

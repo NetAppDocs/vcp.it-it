@@ -30,8 +30,8 @@ Per utilizzare il plug-in Element vCenter, è necessario VMware vSphere 8.0 e 7.
 .Versioni di VMware vSphere supportate dal plug-in
 Il plug-in supporta le seguenti versioni principali del software VMware:
 
-* VSphere 8,0 Update 1 con vCenter Server, ESXi e datastore VMFS5 e VMFS6
-* VSphere 7.0 e 7.0 Update 1, 2 e 3, inclusi datastore vCenter Server, ESXi e VMFS5 e VMFS6
+* VSphere 8,0 Update 1 e 2, compresi i datastore vCenter Server, ESXi e VMFS5 e VMFS6
+* VSphere 7,0 e 7,0 Update 1, 2 e 3, compresi i datastore vCenter Server, ESXi e VMFS5 e VMFS6
 
 
 

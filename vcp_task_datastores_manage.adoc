@@ -86,12 +86,38 @@ TIP: Utilizzare un nome univoco per ciascun datastore di un data center. Per amb
 NOTE: È necessario almeno un host connesso prima di poter creare un nuovo datastore. Se l'host dispone di più iniziatori, selezionare un iniziatore o l'host per selezionare tutti gli iniziatori. Se si utilizza vCenter Linked Mode, solo gli host disponibili per il server vCenter a cui è assegnato il cluster sono disponibili per la selezione.
 
 . Selezionare *Avanti*.
-. Nel riquadro *Configure Volume* (Configura volume), selezionare un volume esistente e passare alla fase successiva oppure creare un nuovo volume per il nuovo datastore:
+. Nel riquadro *Configura volume*, selezionare un volume esistente o creare un nuovo volume per il nuovo datastore:
 +
+[role="tabbed-block"]
+====
+.Selezionare il volume esistente
+--
+Se si seleziona un volume esistente, è necessario soddisfare i seguenti prerequisiti:
 
-NOTE: Se si seleziona un volume esistente per creare un nuovo datastore, i dati esistenti andranno persi. Per i volumi VMFS esistenti, consultare la documentazione VMware su https://docs.vmware.com/en/VMware-vSphere/6.7/com.vmware.vsphere.storage.doc/GUID-EEFEB765-A41F-4B6D-917C-BB9ABB80FC80.html["Montaggio di una copia del datastore VMFS"^] e. https://docs.vmware.com/en/VMware-vSphere/6.7/com.vmware.vsphere.storage.doc/GUID-EBAB0D5A-3C77-4A9B-9884-3D4AD69E28DC.html["Gestione di datastore VMFS duplicati"^].
-
+** Per utilizzare un gruppo di accesso ai volumi, seguire questa procedura.
 +
+... Creare un nuovo volume con 512e attivato.
+... Aggiungere il volume a un gruppo di accesso che contiene uno o più iniziatori host di destinazione.
+
+
+** Per utilizzare il protocollo CHAP:
++
+... Verificare che il protocollo CHAP sia configurato per ogni adattatore iSCSI dell'host di destinazione.
+... Creare un nuovo volume con 512e attivato utilizzando una delle seguenti opzioni:
++
+**** Utilizzare un account con le impostazioni CHAP appropriate per ciascun host di destinazione.
+**** Creare un account e configurare i segreti di destinazione e iniziatore.
+
+
+... Consente di visualizzare i dettagli del volume.
+... Aggiungere il volume IQN a ogni tabella di rilevamento statico dell'adattatore iSCSI dell'host di destinazione.
+
+
+
+
+--
+.Creazione di un nuovo volume
+--
 .. Immettere un nome per il volume che esegue il backup dell'archivio dati.
 .. Selezionare un account utente dall'elenco degli account.
 .. Inserire le dimensioni totali del volume che si desidera creare.
@@ -118,6 +144,8 @@ TIP: I volumi con un valore massimo o burst IOPS superiore a 20,000 IOPS potrebb
 
 
 
+--
+====
 . Selezionare *Avanti*.
 . Configurare il tipo di autorizzazione per l'accesso all'host scegliendo una delle seguenti opzioni:
 +
