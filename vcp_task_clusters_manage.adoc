@@ -165,9 +165,6 @@ Se si imposta un gruppo Linked Mode e si desidera riassegnare un cluster a un al
 
 È possibile attivare manualmente la funzionalità di crittografia a riposo (EAR) utilizzando il punto di estensione del plug-in.
 
-
-NOTE: Questa funzione non è disponibile nei cluster SDS aziendali di SolidFire.
-
 .Fasi
 . Nel client Web vSphere, aprire la scheda *Clusters*:
 +
@@ -206,9 +203,6 @@ NOTE: Questa funzione non è disponibile nei cluster SDS aziendali di SolidFire.
 
 È possibile attivare manualmente una sessione SSH (Secure Shell) utilizzando il punto di estensione del plug-in. L'abilitazione di SSH consente ai tecnici del supporto tecnico NetApp di accedere ai nodi di storage per la risoluzione dei problemi per la durata determinata.
 
-
-NOTE: Questa funzione non è disponibile nei cluster SDS aziendali di SolidFire.
-
 .Fasi
 . Nel client Web vSphere, aprire la scheda *Clusters*:
 +
@@ -232,9 +226,6 @@ NOTE: Per continuare, inserire un valore.
 == Modificare il limite di tempo SSH
 
 È possibile immettere una nuova durata per una sessione SSH.
-
-
-NOTE: Questa funzione non è disponibile nei cluster SDS aziendali di SolidFire.
 
 .Fasi
 . Nel client Web vSphere, aprire la scheda *Clusters*:
@@ -262,9 +253,6 @@ NOTE: Per continuare, inserire un valore.
 == Disattiva SSH
 
 È possibile disattivare manualmente l'accesso SSH (Secure Shell) ai nodi nel cluster di storage utilizzando il punto di estensione del plug-in.
-
-
-NOTE: Questa funzione non è disponibile nei cluster SDS aziendali di SolidFire.
 
 .Fasi
 . Nel client Web vSphere, aprire la scheda *Clusters*:
@@ -319,9 +307,6 @@ Dopo aver impostato le preferenze di monitoraggio, è possibile monitorare i dom
 
 Se lo si desidera link:vcp_task_add_manage_nodes.html#restart-a-node["riavviare"] Invece di arrestare il cluster, è possibile selezionare tutti i nodi dalla pagina del cluster nel punto di estensione della gestione NetApp Element ed eseguire un riavvio.
 
-
-NOTE: Questa funzione non è disponibile nei cluster SDS aziendali di SolidFire.
-
 .Di cosa hai bisogno
 L'i/o è stato interrotto e tutte le sessioni iSCSI sono state disconnesse.
 
@@ -349,9 +334,6 @@ Ulteriori collegamenti sono disponibili nelle pagine Getting Started e Cluster:
 * A partire dal plug-in Element vCenter 5.0, selezionare NetApp Element plug-in remoto > Gestione.
 * Per il plug-in Element vCenter 4.10 e versioni precedenti, selezionare il punto di estensione Gestione NetApp Element.
 
-
-
-NOTE: Questa funzione non è disponibile nei cluster SDS aziendali di SolidFire.
 
 .Fasi
 . Nel client Web vSphere, aprire la scheda *Clusters*:

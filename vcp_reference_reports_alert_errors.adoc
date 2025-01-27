@@ -101,10 +101,10 @@ Un servizio a blocchi è stato rilevato come non integro:
 ** Severità = Avvertenza: Non viene intrapresa alcuna azione. Questo periodo di avviso scade tra cTimeUntilBSIsKilledMsec=330000 millisecondi.
 ** Severità = errore: Il sistema sta discommissionando automaticamente i dati e replicando i dati su altri dischi integri.
 ** Severità = critico: Ci sono servizi di blocco guasti su diversi nodi maggiori o uguali al numero di repliche (2 per doppia elica). I dati non sono disponibili e la sincronizzazione bin non verrà completata.
-
-
 +
 Verificare la presenza di problemi di connettività di rete ed errori hardware. In caso di guasto di componenti hardware specifici, si verificheranno altri guasti. Il guasto viene disattivato quando il servizio a blocchi è accessibile o quando il servizio è stato disattivato.
+
+
 
 * *BmcSelfTestFailed*
 +
@@ -208,12 +208,9 @@ Il cluster restituisce questo errore quando uno o più dischi si sono guastati, 
 ** Il servizio master per il nodo non è accessibile (tutti i dischi nel nodo sono considerati mancanti/guasti).
 ** L'unità è bloccata e non è possibile acquisire la chiave di autenticazione dell'unità.
 ** L'unità è bloccata e l'operazione di sblocco non riesce.
-
-
 +
 Per risolvere questo problema:
 
-+
 ** Verificare la connettività di rete del nodo.
 ** Sostituire l'unità.
 ** Assicurarsi che la chiave di autenticazione sia disponibile.
@@ -237,10 +234,10 @@ La durata rimanente di un disco è scesa al di sotto delle soglie, ma è ancora 
 +
 ** Disco con seriale: <serial number> nello slot: <node slot> <drive slot> ha livelli di usura critici.
 ** Disco con seriale: <serial number> nello slot: <node slot> <drive slot> ha basse riserve di usura.
-
-
 +
 Per risolvere il problema, sostituire il disco al più presto.
+
+
 
 * *DuplicateClusterMasterCandidate*
 +

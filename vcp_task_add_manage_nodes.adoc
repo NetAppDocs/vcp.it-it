@@ -109,9 +109,6 @@ Per riavviare il cluster, è possibile selezionare tutti i nodi del cluster ed e
 
 IMPORTANT: Questo metodo riavvia tutti i servizi di rete su un nodo, causando la perdita temporanea della connettività di rete.
 
-
-NOTE: Questa funzione non è disponibile nei cluster SDS aziendali di SolidFire.
-
 .Fasi
 . In vSphere Web Client, aprire la scheda *Cluster*:
 +
@@ -141,10 +138,6 @@ NOTE: Se vengono aggiunti due o più cluster, assicurarsi che il cluster che si 
 
 .Di cosa hai bisogno
 L'i/o è stato interrotto e tutte le sessioni iSCSI sono state disconnesse se si stanno riavviando più di un nodo contemporaneamente.
-
-.A proposito di questa attività
-
-NOTE: Questa funzione non è disponibile nei cluster SDS aziendali di SolidFire.
 
 .Fasi
 . In vSphere Web Client, aprire la scheda *Cluster*:
