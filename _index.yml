@@ -40,9 +40,9 @@ indexpage:
   - title: Più risorse
     links:
     - title: Risorse di documentazione SolidFire ed Element
-      url: https://www.netapp.com/data-storage/solidfire/documentation
+      url: https://docs.netapp.com/us-en/element-software/index.html
     - title: Risorse di documentazione NetApp HCI
-      url: https://www.netapp.com/hybrid-cloud/hci-documentation/
+      url: https://docs.netapp.com/us-en/hci/index.html
     - title: NetApp Hybrid Cloud Control and Management Services - Note di release
         KB
       url: https://kb.netapp.com/Advice_and_Troubleshooting/Data_Storage_Software/Management_services_for_Element_Software_and_NetApp_HCI/Management_Services_Release_Notes

@@ -14,15 +14,25 @@ keywords: netapp, vcp, vcenter, plugin, element, new, whats new
 
 
 [role="lead"]
-Non ci sono nuovi miglioramenti nella release 5,4 del plug-in Element vCenter.
+Il plug-in NetApp Element per vCenter Server versione 5.5 offre miglioramenti della sicurezza ed è disponibile con la versione 2.27.40 dei servizi di gestione.
 
-Il plug-in Element vCenter 5,4 è disponibile con la release 2.26.30 dei servizi di gestione. link:https://library.netapp.com/ecm/ecm_download_file/ECMLP3330676["Scopri di più"^]
+link:https://library.netapp.com/ecm/ecm_download_file/ECMLP3344864["Scopri di più sul plug-in Element per la versione 5.5 di vCenter Server"^]
+
+
+
+== Plug-in NetApp Element per vCenter Server 5.4
+
+Il plug-in Element vCenter 5.4 è disponibile con la versione 2.26.30 dei servizi di gestione.
+
+link:https://library.netapp.com/ecm/ecm_download_file/ECMLP3330676["Scopri di più sul plug-in Element per la versione 5.4 di vCenter Server"^]
 
 
 
 == Plug-in NetApp Element per vCenter Server 5,3
 
-Il plug-in NetApp Element per vCenter Server 5,3 garantisce miglioramenti in termini di sicurezza e prestazioni. https://library.netapp.com/ecm/ecm_download_file/ECMLP3316480["Scopri di più"^].
+Il plug-in NetApp Element per vCenter Server 5.3 offre miglioramenti in termini di sicurezza e prestazioni.
+
+https://library.netapp.com/ecm/ecm_download_file/ECMLP3316480["Scopri di più sul plug-in Element per la versione 5.3 di vCenter Server"^] .
 
 Il plug-in Element vCenter 5,3 è disponibile con la release 2.25.42 dei servizi di gestione.
 

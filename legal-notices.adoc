@@ -47,6 +47,7 @@ link:https://www.netapp.com/company/legal/privacy-policy/["https://www.netapp.co
 
 I file di avviso forniscono informazioni sul copyright e sulle licenze di terze parti utilizzate nel software NetApp.
 
+* link:media/mgmt_svcs_2.27_notice.pdf["Avviso per Management Services 2.27.40 (plug-in NetApp Element per VMware vCenter Server 5.5.16)"^]
 * link:media/mgmt_svcs_2.26_notice.pdf["Avviso per i servizi di gestione 2.26.30 (plug-in NetApp Element per VMware vCenter Server 5,4.1)"^]
 * link:media/mgmt_svcs_2.25_notice.pdf["Avviso per i servizi di gestione 2.25.42 (plug-in NetApp Element per VMware vCenter Server 5,3.9)"^]
 * link:media/mgmt_svcs_2.24_notice.pdf["Avviso per i servizi di gestione 2.24.40 (plug-in NetApp Element per VMware vCenter Server 5,2.12)"^]
